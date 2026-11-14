@@ -9,11 +9,13 @@ import {
   Plane,
   ShieldCheck,
   ShoppingBasket,
+  SlidersHorizontal,
   Smartphone,
   Users,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAppData } from '../../app/AppData';
+import { isShown, useExtras, type ExtraGroup } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { Card } from '../../ui/Card';
 import { MenuList, type MenuEntry } from '../../ui/MenuList';
@@ -41,8 +43,9 @@ const isIos = () => /iPhone|iPad|iPod/.test(navigator.userAgent);
 export function MorePage() {
   const { today } = useAppData();
   const [lastCheck] = useState(readLastCheck);
+  const extras = useExtras();
   /** Three groups as in the iOS settings (ADR-0076): what you use each week comes first. */
-  const groups: { id: string; title: string; entries: MenuEntry[] }[] = [
+  const groups: { id: string; title: string; entries: (MenuEntry & { extra?: ExtraGroup })[] }[] = [
     {
       id: 'daily',
       title: t.groups.daily,
@@ -58,9 +61,22 @@ export function MorePage() {
           icon: ClipboardCheck,
           title: messages.pages.check,
           detail: t.checkDetail(lastCheck === null ? null : daysBetween(lastCheck, today)),
+          extra: 'routines',
         },
-        { to: '/more/spots', icon: MapPin, title: messages.pages.spots, detail: t.spotsDetail },
-        { to: '/more/vacation', icon: Plane, title: t.vacationLabel, detail: t.vacationDetail },
+        {
+          to: '/more/spots',
+          icon: MapPin,
+          title: messages.pages.spots,
+          detail: t.spotsDetail,
+          extra: 'spots',
+        },
+        {
+          to: '/more/vacation',
+          icon: Plane,
+          title: t.vacationLabel,
+          detail: t.vacationDetail,
+          extra: 'routines',
+        },
       ],
     },
     {
@@ -73,18 +89,26 @@ export function MorePage() {
           title: messages.pages.history,
           detail: t.historyDetail,
         },
-        { to: '/more/climate', icon: Leaf, title: messages.pages.climate, detail: t.climateDetail },
+        {
+          to: '/more/climate',
+          icon: Leaf,
+          title: messages.pages.climate,
+          detail: t.climateDetail,
+          extra: 'insights',
+        },
         {
           to: '/more/achievements',
           icon: Award,
           title: messages.pages.achievements,
           detail: t.achievementsDetail,
+          extra: 'insights',
         },
         {
           to: '/more/reports',
           icon: FileChartColumn,
           title: messages.reports.title,
           detail: t.reportsDetail,
+          extra: 'insights',
         },
       ],
     },
@@ -92,11 +116,30 @@ export function MorePage() {
       id: 'household',
       title: t.groups.household,
       entries: [
-        { to: '/more/people', icon: Users, title: messages.pages.people, detail: t.peopleDetail },
+        {
+          to: '/more/people',
+          icon: Users,
+          title: messages.pages.people,
+          detail: t.peopleDetail,
+          extra: 'household',
+        },
         { to: '/more/data', icon: ShieldCheck, title: messages.pages.data, detail: t.dataDetail },
+        {
+          to: '/more/extras',
+          icon: SlidersHorizontal,
+          title: messages.pages.extras,
+          detail: t.extrasDetail(extras.on),
+        },
       ],
     },
   ];
+  // Extras the person has not switched on stay out of the menu (ADR-0095); their pages still open.
+  const shown = groups.map((group) => ({
+    ...group,
+    entries: group.entries.filter(
+      (entry) => entry.extra === undefined || isShown(extras, entry.extra),
+    ),
+  }));
   return (
     <div className="space-y-6">
       <h1 className="large-title">{messages.pages.more}</h1>
@@ -111,7 +154,7 @@ export function MorePage() {
         </Card>
       )}
 
-      {groups.map((group) => (
+      {shown.map((group) => (
         <section key={group.id} aria-labelledby={`more-${group.id}`} className="space-y-2">
           <h2
             id={`more-${group.id}`}

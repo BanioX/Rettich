@@ -16,6 +16,8 @@ import type { FridgeDb } from './db';
 export interface LocalProfile {
   household: Household;
   member: Member;
+  /** Created just now: a new person on this device (starts with the essentials, ADR-0095). */
+  created: boolean;
 }
 
 /**
@@ -35,7 +37,7 @@ export async function ensureLocalHousehold(
       const household = await db.households.get(householdId as Household['id']);
       const member = await db.members.get(memberId as Member['id']);
       if (household !== undefined && member !== undefined) {
-        return { household, member };
+        return { household, member, created: false };
       }
     }
 
@@ -63,7 +65,7 @@ export async function ensureLocalHousehold(
       { key: 'currentHouseholdId', value: household.id },
       { key: 'currentMemberId', value: member.id },
     ]);
-    return { household, member };
+    return { household, member, created: true };
   });
 }
 

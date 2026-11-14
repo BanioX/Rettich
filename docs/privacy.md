@@ -34,7 +34,7 @@ Alles liegt im Speicher deines Browsers auf diesem Gerät (IndexedDB). Ohne dein
 | Verlauf der Änderungen (Ereignisse) | Rückgängig, Export, später der Abgleich zwischen Geräten |
 
 Zusätzlich merkt sich der Browser einige Kleinigkeiten ohne Personenbezug, nicht im Export (vollständige Liste: [`nebenwirkungen.md`](./swelp/nebenwirkungen.md)):
-- im `localStorage`: das Datum deines letzten Kühlschrank-Checks und deiner letzten Sicherung, die gewählte Ansicht im Vorrat, ob du den Wisch-Tipp, den Wochenrückblick und die Frage nach einer Woche schon gesehen hast;
+- im `localStorage`: das Datum deines letzten Kühlschrank-Checks und deiner letzten Sicherung, die gewählte Ansicht im Vorrat, welche Funktionen du eingeschaltet hast, ob du den Wisch-Tipp, den Wochenrückblick und die Frage nach einer Woche schon gesehen hast;
 - für die freiwillige App-Sperre die Kennung des Zugangsschlüssels und «Sperren nach». Face ID, Touch ID oder den Code prüft das Gerät selbst; Rettich sieht keine biometrischen Daten (ADR-0086);
 - ob die App nach einem Update gerade neu geladen hat (`sessionStorage`, nur bis zum Schliessen des Tabs).
 

@@ -26,6 +26,7 @@ Was der Code ausserhalb seiner selbst bewirkt: ans Netz senden, auf dem Gerät s
 | SE-28 | localStorage | `fridgeai:app-lock` | Kennung des Zugangsschlüssels der App-Sperre (nicht geheim) und «Sperren nach»; bewusst nicht in der Datenbank und nicht im Export (ADR-0086) | bis zum Ausschalten oder Löschen der Website-Daten |
 | SE-30 | localStorage | `fridgeai:week-review-seen` | Montag der Woche, deren Rückblick «Gesehen» ist; blendet «Deine Woche» bis zur nächsten Woche aus, nicht im Export (ADR-0090) | bis zum Löschen der Website-Daten |
 | SE-31 | localStorage | `fridgeai:feedback-ask` | «Später» (bis wann) und «Nicht mehr fragen» für die Frage nach einer Woche; nicht im Export (ADR-0089) | bis zum Löschen der Website-Daten |
+| SE-35 | localStorage | `fridgeai:extras` | Welche Funktionen dieses Gerät zeigt: «Erweitert» an oder aus und jede Gruppe; nur Anzeige, nicht im Export (ADR-0095) | bis zum Löschen der Website-Daten |
 
 ## Geräte-Funktionen
 

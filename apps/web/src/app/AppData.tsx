@@ -14,6 +14,7 @@ import {
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { browserClock, browserIds } from '../data/adapters';
 import { ensureLocalHousehold } from '../data/bootstrap';
+import { startWithEssentials } from './extras';
 import { appContext } from '../data/command';
 import { FridgeDb } from '../data/db';
 import { createInventoryHandlers, type InventoryHandlers } from '../data/handlers';
@@ -69,6 +70,11 @@ export function AppDataProvider({ children, db }: { children: ReactNode; db?: Fr
       .then((profile) => {
         // Local-first: ask the browser not to clear the data when space runs low.
         void requestPersistentStorage('storage' in navigator ? navigator.storage : undefined);
+        // A new person starts with the essentials (ADR-0095); before the cancel check, because
+        // only the first of two effect runs creates the household.
+        if (profile.created) {
+          startWithEssentials();
+        }
         if (cancelled) {
           return;
         }

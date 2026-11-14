@@ -7,7 +7,33 @@ export { expect } from '@playwright/test';
  * Every test: Open Food Facts is never called for real. The name search (ADR-0025) asks while
  * typing, so each test starts with an empty search answer; a spec's own `page.route` wins.
  */
-export const test = base.extend<{ noOpenFoodFacts: undefined }>({
+export const test = base.extend<{
+  noOpenFoodFacts: undefined;
+  newPerson: boolean;
+  allExtras: undefined;
+}>({
+  /** `test.use({ newPerson: true })`: start like a new person, with the essentials (ADR-0095). */
+  newPerson: [false, { option: true }],
+  /**
+   * Every other test sees all functions, as people with data do. Set only when nothing is chosen
+   * yet, so a switch flipped in a test survives the next page load.
+   */
+  allExtras: [
+    async ({ context, newPerson }, provide) => {
+      if (!newPerson) {
+        await context.addInitScript(() => {
+          if (window.localStorage.getItem('fridgeai:extras') === null) {
+            window.localStorage.setItem(
+              'fridgeai:extras',
+              JSON.stringify({ on: true, groups: {} }),
+            );
+          }
+        });
+      }
+      await provide(undefined);
+    },
+    { auto: true },
+  ],
   noOpenFoodFacts: [
     async ({ context }, provide) => {
       await context.route('https://*.openfoodfacts.org/**', (route) =>

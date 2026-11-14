@@ -189,6 +189,12 @@ export const routes: RouteObject[] = [
           Component: (await import('../features/household/HouseholdPage')).HouseholdPage,
         }),
       },
+      {
+        path: 'more/extras',
+        lazy: async () => ({
+          Component: (await import('../features/more/ExtrasPage')).ExtrasPage,
+        }),
+      },
       // Addresses before the four tabs (ADR-0031): bookmarks and installed apps keep working.
       { path: 'scan', element: <Navigate to="/add" replace /> },
       // «Mit eigener KI» was removed on 7.11.2026 (ADR-0012): old links land on «Erfassen».

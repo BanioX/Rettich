@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect, test } from './test';
 
 test.use({ reducedMotion: 'no-preference' });
 
@@ -34,11 +35,12 @@ test('«Bewegung reduzieren» keeps every page change still', async ({ browser }
   const context = await browser.newContext({ reducedMotion: 'reduce' });
   const page = await context.newPage();
   await page.goto('/more');
+  // An own context starts like a new person (ADR-0095): «Journal» is there in the essentials.
   await page
-    .getByRole('link', { name: /Auszüge/ })
+    .getByRole('link', { name: /Journal/ })
     .first()
     .click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Auszüge' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Journal' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.dataset.transition)).toBeUndefined();
   await context.close();
 });

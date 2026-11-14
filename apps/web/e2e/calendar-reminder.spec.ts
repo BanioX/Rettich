@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './test';
 
 test('an item can go into the calendar as a reminder for the evening before', async ({ page }) => {
   await page.goto('/inventory/new');
