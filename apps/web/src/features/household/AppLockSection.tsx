@@ -4,6 +4,7 @@ import { messages } from '../../app/messages.de-CH';
 import { useAppLock, type LockOutcome } from '../../app/lock/lock-context';
 import type { LockAfter } from '../../app/lock/lock-settings';
 import { ChoiceChips } from '../../ui/ChoiceChips';
+import { Switch } from '../../ui/Switch';
 
 const t = messages.appLock;
 
@@ -38,24 +39,12 @@ export function AppLockSection() {
         <span id="lock-switch-label" className="font-semibold">
           {t.switchLabel}
         </span>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={lock.enabled}
-          aria-labelledby="lock-switch-label"
+        <Switch
+          checked={lock.enabled}
+          labelledBy="lock-switch-label"
           disabled={busy || unavailable}
-          onClick={() => void toggle()}
-          className={`relative h-8 w-14 shrink-0 rounded-full border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basil-600 disabled:opacity-50 ${
-            lock.enabled ? 'border-basil-700 bg-basil-700' : 'border-line bg-surface-muted'
-          }`}
-        >
-          <span
-            aria-hidden="true"
-            className={`absolute top-0.5 left-0.5 size-6 rounded-full bg-white shadow-card transition-transform ${
-              lock.enabled ? 'translate-x-6' : ''
-            }`}
-          />
-        </button>
+          onChange={() => void toggle()}
+        />
       </div>
       {unavailable ? <p className="text-sm text-ink-muted">{t.unavailable}</p> : null}
       {lock.enabled ? (

@@ -4,6 +4,7 @@ import { addDays } from '@fridgeai/core';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it } from 'vitest';
 import { AppDataProvider } from '../../app/AppData';
+import { ESSENTIALS, writeExtras } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { browserClock } from '../../data/adapters';
 import { testDb } from '../../data/test-helpers';
@@ -48,7 +49,25 @@ describe('«Mehr»: Kühlschrank-Check', () => {
     const balance = screen.getByRole('region', { name: messages.more.groups.balance });
     expect(within(balance).getByRole('link', { name: /^Journal/ })).toBeDefined();
     const household = screen.getByRole('region', { name: messages.more.groups.household });
-    expect(within(household).getAllByRole('link')).toHaveLength(2);
+    expect(
+      within(household)
+        .getAllByRole('link')
+        .map((link) => link.getAttribute('href')),
+    ).toEqual(['/more/people', '/more/data', '/more/extras']);
+  });
+
+  it('shows the essentials only, while «Erweitert» is off (ADR-0095)', async () => {
+    writeExtras(ESSENTIALS);
+    renderMore();
+    const daily = await screen.findByRole('region', { name: messages.more.groups.daily });
+    expect(
+      within(daily)
+        .getAllByRole('link')
+        .map((link) => link.getAttribute('href')),
+    ).toEqual(['/shopping']);
+    const balance = screen.getByRole('region', { name: messages.more.groups.balance });
+    expect(within(balance).getAllByRole('link')).toHaveLength(1);
+    expect(screen.getByRole('link', { name: /^Funktionen.*Grundfunktionen/ })).toBeDefined();
   });
 
   it('words today and yesterday', () => {

@@ -31,6 +31,7 @@ export const messages = {
     achievements: 'Abzeichen',
     climate: 'Klimabilanz',
     people: 'Personen',
+    extras: 'Funktionen',
   },
   placeholder: 'Kommt bald.',
   loading: 'Rettich wird geladen …',
@@ -1137,6 +1138,33 @@ export const messages = {
     spotsDetail: 'Plätze mit Foto, damit alle alles finden',
     vacationLabel: 'Ferien-Check',
     vacationDetail: 'Was bis zu deiner Rückkehr abläuft',
+    /** «Funktionen» (ADR-0095): which set this device shows. */
+    extrasDetail: (on: boolean) => (on ? 'Erweitert' : 'Grundfunktionen'),
+  },
+  /** «Funktionen» (ADR-0095): the essentials first, every extra group switchable. */
+  extras: {
+    intro:
+      'Rettich zeigt zuerst das Wichtigste: erfassen, sehen, was bald abläuft, und eintragen, was du verwertet oder entsorgt hast. Mit «Erweitert» kommt mehr dazu.',
+    switchLabel: 'Erweitert',
+    switchHint:
+      'Zeigt die Gruppen unten. Ausblenden löscht nichts: Deine Daten bleiben und sind in der Sicherung.',
+    groupsTitle: 'Was dazukommt',
+    groups: {
+      household: { title: 'Haushalt', detail: 'Personen und «Gehört»: wem etwas gehört' },
+      spots: { title: 'Plätze', detail: '«Wo ist was?»: Fächer und Schränke mit Foto' },
+      organize: {
+        title: 'Ordnen',
+        detail: 'Auswählen, Töpfe, Ziehen, mehrere ändern, Vorrat nach Art',
+      },
+      cooking: { title: 'Kochen', detail: 'Rezepte, Verarbeiten und Reste' },
+      nutrition: { title: 'Nährwerte', detail: 'Nährwerte und Allergene, Nährwert-Foto' },
+      insights: { title: 'Auswertung', detail: 'Klimabilanz, Auszüge als PDF, Abzeichen' },
+      routines: {
+        title: 'Routinen',
+        detail: 'Kühlschrank-Check, Ferien-Check, Deine Woche, Kalender',
+      },
+      hints: { title: 'Hinweise', detail: '«Im Blick», Mindestbestand, «Bald wieder nötig»' },
+    },
   },
   /** «Ferien-Check» (ADR-0069): what runs out while the person is away, freeze or use up. */
   vacation: {
