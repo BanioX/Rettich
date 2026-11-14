@@ -1,12 +1,12 @@
 # Datenschutz bei Rettich (Entwurf)
 
-> **Entwurf, keine Rechtsberatung.** Stand: v0.11.0, 8. November 2026. Vor einem öffentlichen Start prüfen Alban und eine Fachperson diesen Text (Plan 12d). Massstab: Schweizer Datenschutzgesetz (DSG), für Nutzer:innen in der EU die DSGVO.
+> **Entwurf, keine Rechtsberatung.** Stand: v0.22.0, 14. November 2026. Vor einem öffentlichen Start prüfen Alban und eine Fachperson diesen Text (Plan 12d). Massstab: Schweizer Datenschutzgesetz (DSG), für Nutzer:innen in der EU die DSGVO.
 
 ## Kurz gesagt
 
 - Dein Vorrat, deine Einkaufsliste und deine Statistik bleiben **auf deinem Gerät**. Es gibt kein Konto und keinen Rettich-Server mit deinen Daten.
 - Beim Scannen geht **nur die Barcode-Nummer** an Open Food Facts, damit Name, Nährwerte und Packungsbild kommen. Suchst du ein Produkt nach Namen, gehen ab drei Buchstaben **nur die getippten Wörter** dorthin, sobald du kurz mit Tippen innehältst. Liest Rettich eine Quittung, sucht es jede Zeile zuerst bei früheren Quittungen und im mitgelieferten Katalog, auf dem Gerät. Nur Zeilen ohne sicheren Treffer gehen als **Produktname** an Open Food Facts, ohne Preise, Laden und Datum.
-- Fotos von Codes, Quittungen und Nährwerttabellen (auch Screenshots) sowie Quittungs-PDFs werden auf dem Gerät gelesen und **nie gespeichert**.
+- Fotos von Codes, Quittungen, Etiketten, Ablaufdaten und Nährwerttabellen (auch Screenshots) sowie Quittungs-PDFs werden auf dem Gerät gelesen und **nie gespeichert**. Nur ein Foto, das du bewusst für einen Platz aufnimmst («Wo ist was?»), bleibt verkleinert auf dem Gerät.
 - **Kein Tracking, keine Werbung, keine Cookies.**
 - Du kannst jederzeit **alles exportieren** (JSON) und **alles löschen** («Mehr» › «Deine Daten»).
 
@@ -23,6 +23,9 @@ Alles liegt im Speicher deines Browsers auf diesem Gerät (IndexedDB). Ohne dein
 | Artikel im Vorrat: Name, Kategorie, Ort, Menge, Ablaufdatum, Preis (falls erfasst) | Damit Rettich weiss, was du hast und was bald abläuft |
 | Abschlüsse: verwertet oder entsorgt (ältere Einträge auch «weitergegeben»), mit Grund und Wert | Rückgängig, die «Bilanz» des Monats, das «Journal» |
 | Einkaufsliste | «Du hast noch …» gegen Doppelkäufe |
+| Personen im Haushalt: nur die Namen, die du eintippst, und bei Artikeln «Gehört» | Damit klar ist, wem etwas gehört; es gibt kein Konto (ADR-0058) |
+| Plätze: Name und ein verkleinertes Foto, wenn du eines aufnimmst | «Wo ist was?» (ADR-0056) |
+| Eigene Rezepte | «Meine Rezepte» unter «Wissen» (ADR-0048) |
 | Gelesene Quittungen: Laden, Datum, Total und pro Zeile Name, Menge, Preis, Rabatt (nie Foto, PDF oder Karten- und Kundennummern) | Echte Preise im Vorrat, später dein Preisgedächtnis |
 | Produkte, die du schon erfasst hast, und «Schnell erfassen» | Damit der nächste Scan oder Tipp schneller geht |
 | Antworten von Open Food Facts und Packungsbilder | Damit derselbe Barcode auch offline erkannt wird (30 Tage) |
@@ -30,8 +33,9 @@ Alles liegt im Speicher deines Browsers auf diesem Gerät (IndexedDB). Ohne dein
 | Deine Antworten auf die Frage nach einer Woche: nur Text und Zeitpunkt; gelöscht ohne Text | Damit du und Alban im Pilot lernen, was stört; sie verlassen das Gerät nur mit deinem Export (ADR-0089) |
 | Verlauf der Änderungen (Ereignisse) | Rückgängig, Export, später der Abgleich zwischen Geräten |
 
-Zusätzlich merkt sich der Browser zwei Kleinigkeiten ohne Personenbezug:
-- das Datum deines letzten Kühlschrank-Checks (`localStorage`), damit die Karte nur einmal pro Woche erscheint;
+Zusätzlich merkt sich der Browser einige Kleinigkeiten ohne Personenbezug, nicht im Export (vollständige Liste: [`nebenwirkungen.md`](./swelp/nebenwirkungen.md)):
+- im `localStorage`: das Datum deines letzten Kühlschrank-Checks und deiner letzten Sicherung, die gewählte Ansicht im Vorrat, ob du den Wisch-Tipp, den Wochenrückblick und die Frage nach einer Woche schon gesehen hast;
+- für die freiwillige App-Sperre die Kennung des Zugangsschlüssels und «Sperren nach». Face ID, Touch ID oder den Code prüft das Gerät selbst; Rettich sieht keine biometrischen Daten (ADR-0086);
 - ob die App nach einem Update gerade neu geladen hat (`sessionStorage`, nur bis zum Schliessen des Tabs).
 
 ## Was das Gerät verlässt
@@ -46,10 +50,12 @@ Zusätzlich merkt sich der Browser zwei Kleinigkeiten ohne Personenbezug:
 
 Andere Verbindungen erlaubt die App nicht: Eine Content-Security-Policy lässt nur die App selbst und die beiden Open-Food-Facts-Adressen zu.
 
+Ohne Verbindung nach aussen bleiben auch: die Sicherung mit Passwort (auf dem Gerät verschlüsselt, ADR-0087), die Kalenderdatei aus «Im Kalender erinnern» (auf dem Gerät erstellt, wohin sie geht, entscheidest du, ADR-0090) und Text, den du über «Teilen an Rettich» oder einen Link an die Einkaufsliste gibst (er wartet im Feld und wird erst mit deinem Tipp gespeichert, ADR-0094).
+
 ## Kamera und Fotos
 
 - Die Kamera startet nur, wenn du «Kamera starten» antippst. Du kannst sie verweigern und den Code als Foto wählen oder die Nummer eintippen.
-- Bilder werden auf dem Gerät nach einem Code oder einer Nährwerttabelle durchsucht und danach verworfen. Es gibt keinen Upload. Von einer Nährwerttabelle bleiben nur die Zahlen, die du mit «Speichern» bestätigst.
+- Bilder werden auf dem Gerät nach einem Code, einem Datum, einem Etikett oder einer Nährwerttabelle durchsucht und danach verworfen. Es gibt keinen Upload. Von einer Nährwerttabelle bleiben nur die Zahlen, die du mit «Speichern» bestätigst.
 
 ## Wie lange
 
@@ -58,7 +64,8 @@ Andere Verbindungen erlaubt die App nicht: Eine Content-Security-Policy lässt n
 | Aktiver Vorrat und Einkaufsliste | solange du sie brauchst |
 | Abschlüsse und Verlauf | auf dem Gerät, bis du sie löschst. Geplant (ADR-0020): nach 24 Monaten bleiben nur Monatssummen |
 | Antworten von Open Food Facts | 30 Tage, dann wird neu gefragt |
-| Fotos von Codes, Quittungen und Nährwerttabellen | nie gespeichert |
+| Fotos von Codes, Quittungen, Etiketten, Ablaufdaten und Nährwerttabellen | nie gespeichert |
+| Personen, Plätze mit Foto, eigene Rezepte, Antworten auf die Frage nach einer Woche | bis du sie löschst |
 
 ## Deine Rechte
 

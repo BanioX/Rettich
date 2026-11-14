@@ -136,9 +136,11 @@ Systemschrift nach Apples Human Interface Guidelines (ADR-0021): SF Pro auf Appl
   | Fertigprodukt | Silber, neutral | Text `#5B6168` (`ink-muted`) auf `#E9EBED` (`surface-muted`), Package; ruhig, denn es ist keine Warnung. Steht nach Eingefroren/Aufgetaut und vor Geöffnet |
   | Geöffnet | Aprikose | Text `#8A4B0F`, 1 px Rand `#E39A3B` (`apricot`), Weiss, PackageOpen; nur Rand, damit es nicht wie der gefüllte Status-Chip «bald» wirkt |
   | Von der Theke | Oliv | Text `#4F5D27` auf `#ECEEE0` (`olive`/`olive-bg`), Store |
-- **Einfrier-Hinweis:** ein Blatt von unten (Radius 24 px) mit dem Grund je Kategorie und zwei Knöpfen: «Lieber nicht» (Hauptknopf) und «Trotzdem einfrieren».
-- **Startseite «Heute retten»:** grosse Zahl (Wert im Kühlschrank in CHF), darunter die dringendsten Artikel, Lagerorte als drei Kacheln.
-- **Navigation:** weisse Leiste unten mit fünf Zielen (Start, Vorrat, ＋ Erfassen, Wissen, Mehr; ADR-0031, ADR-0041), aktives Ziel mit hellgrüner Pill (`basil-100`) hinter dem Icon. ＋ steht in der Mitte und als einziges Icon in einem gefüllten Onyx-Kreis. Unterseiten haben oben links «‹ Titel der vorigen Seite».
+- **Einfrier-Hinweis:** ein Sheet (Radius 24 px) mit dem Grund je Kategorie und zwei Knöpfen: «Lieber nicht» (Hauptknopf) und «Trotzdem einfrieren».
+- **Startseite:** zuerst der Wert im Kühlschrank als eine dunkle Zeile, dann «Heute retten», ruhige Hinweis-Zeilen, vier Lagerort-Kacheln und die «Bilanz» (ADR-0074). Ab 768 Pixeln bleiben die Kacheln flach (112 px hoch) statt quadratisch.
+- **Navigation:** weisse Leiste unten mit fünf Zielen (Start, Vorrat, ＋ Erfassen, Wissen, Mehr; ADR-0031, ADR-0041), aktives Ziel mit hellgrüner Pill (`basil-100`) hinter dem Icon. ＋ steht in der Mitte und als einziges Icon in einem gefüllten Onyx-Kreis. Unterseiten haben oben links «‹ Titel der vorigen Seite». Ab 1024 Pixeln (iPad quer, Computer) steht dieselbe Liste als Seitenleiste links: 256 px breit, oben Symbol und Name, Icon und Text nebeneinander, Erfassen als Onyx-Zeile, das aktive Ziel auf `basil-100`. Der Inhalt steht rechts daneben (ADR-0092).
+- **Sheets** (kleine Aufgaben wie «Wo liegt das?», «Im Blick», Einfrieren, Mehrere ändern): unter 768 Pixeln von unten, volle Breite, oben gerundet; ab 768 Pixeln als Dialog in der Mitte, höchstens 512 px breit, rundum 24 px, scrollt selbst, wenn er höher als der Bildschirm wird. Gemeinsame Klassen `sheet-backdrop` und `sheet-panel` in `index.css` (ADR-0093).
+- **Bildschirmgrössen:** Der Inhalt ist höchstens 576 px breit, ab 768 Pixeln 672 px, ab 1024 Pixeln 768 px (ADR-0092). Kurze Listen dürfen ab 1024 Pixeln nebeneinander stehen (unter «Wissen»), lange Listen bleiben einspaltig. Mit Maus oder Trackpad (`pointer-fine`) sagen Tipps «Zieh …» statt «Wisch …». Ein-Tasten-Kürzel gibt es bewusst nicht (WCAG 2.1.4).
 - **Segment-Auswahl** (2–4 kurze Optionen, z. B. «Wo ist es?»): eine graue Spur mit gleich breiten Segmenten, 13 px. Die Lagerort-Tabs im Vorrat sehen gleich aus. Das gewählte Segment ist basilikumgrün mit weisser Schrift statt iOS-weiss, damit der Zustand 3:1 Kontrast hat. Sehr lange Wörter trennen auf schmalen Handys mit Bindestrich.
 - **Auswahl-Chips** (Portionen, Gründe): Pills, die umbrechen.
 - **Primärbutton:** `basil-700`, weisse Schrift (8:1), volle Breite auf Mobile.
@@ -157,4 +159,4 @@ Systemschrift nach Apples Human Interface Guidelines (ADR-0021): SF Pro auf Appl
 ## Später
 
 - Ein Schalter Hell/Dunkel/System unter «Mehr», falls jemand den Dunkelmodus unabhängig vom Gerät will.
-- PNG-Icons und Splash-Screens für die Installation: Schritt 12c.
+- Splash-Screens für den Start auf dem iPhone (die PNG-Symbole für die Installation gibt es seit Schritt 12c).
