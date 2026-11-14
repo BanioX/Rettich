@@ -2,6 +2,7 @@ import { BookOpen, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { useId, useState } from 'react';
 import { Link } from 'react-router';
 import { useAppData } from '../../app/AppData';
+import { isShown, useExtras, type ExtraGroup } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { Card } from '../../ui/Card';
 import { GROUPED_ROW_LINK, GroupedList, GroupedListItem } from '../../ui/GroupedList';
@@ -58,11 +59,32 @@ function Entry({ entry }: { entry: GuideEntry }) {
  * «Wissen» (ADR-0041): short explanations of the dates and of storing food, and «Haltbarkeit
  * A–Z» from the catalog with the shelf score, the days open and frozen, and the tips.
  */
+/** Which extra group an entry of «Rettich im Alltag» explains; the rest are essentials. */
+export const EVERYDAY_EXTRA: Readonly<Partial<Record<string, ExtraGroup>>> = {
+  'Verarbeiten und Reste': 'cooking',
+  'Plätze und «Wo ist was?»': 'spots',
+  'Immer da haben': 'hints',
+  Gehört: 'household',
+  Abzeichen: 'insights',
+  Klimabilanz: 'insights',
+  'Auswählen und Töpfe': 'organize',
+  'Ferien-Check': 'routines',
+  'Im Blick': 'hints',
+  'Nährwerte bei Frischem': 'nutrition',
+};
+
 export function KnowledgePage() {
   const { today } = useAppData();
   const searchId = useId();
   const [query, setQuery] = useState('');
   const groups = shelfGuide(query);
+  const extras = useExtras();
+  const cooking = isShown(extras, 'cooking');
+  // «Rettich im Alltag» explains only what this device shows (ADR-0095).
+  const everyday = t.everyday.filter((item) => {
+    const group = EVERYDAY_EXTRA[item.title];
+    return group === undefined || isShown(extras, group);
+  });
 
   return (
     <div className="space-y-6 pb-8">
@@ -71,34 +93,40 @@ export function KnowledgePage() {
         <p className="mt-1 text-ink-muted">{t.intro}</p>
       </div>
 
-      {/* Recipes come in under «Wissen», not as a sixth tab (ADR-0048). */}
-      <section aria-labelledby={`${searchId}-recipes`} className="space-y-3">
-        <h2 id={`${searchId}-recipes`} className="font-display text-xl font-semibold">
-          {r.title}
-        </h2>
-        <h3 className="px-4 text-sm font-semibold text-ink-muted uppercase">{r.todayTitle}</h3>
-        <CookToday />
-        <OwnRecipes />
-        <GroupedList>
-          <GroupedListItem>
-            <Link to="/knowledge/recipes" className={GROUPED_ROW_LINK}>
-              <div className="flex min-h-15 items-center gap-3 py-2.5 pr-3 pl-4">
-                <span
-                  aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-xl bg-surface-muted text-basil-700"
-                >
-                  <BookOpen size={22} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold">{r.allTitle}</p>
-                  <p className="text-sm text-ink-muted">{r.allText}</p>
+      {/* Recipes come in under «Wissen», not as a sixth tab (ADR-0048); an extra (ADR-0095). */}
+      {cooking ? (
+        <section aria-labelledby={`${searchId}-recipes`} className="space-y-3">
+          <h2 id={`${searchId}-recipes`} className="font-display text-xl font-semibold">
+            {r.title}
+          </h2>
+          <h3 className="px-4 text-sm font-semibold text-ink-muted uppercase">{r.todayTitle}</h3>
+          <CookToday />
+          <OwnRecipes />
+          <GroupedList>
+            <GroupedListItem>
+              <Link to="/knowledge/recipes" className={GROUPED_ROW_LINK}>
+                <div className="flex min-h-15 items-center gap-3 py-2.5 pr-3 pl-4">
+                  <span
+                    aria-hidden="true"
+                    className="grid size-10 shrink-0 place-items-center rounded-xl bg-surface-muted text-basil-700"
+                  >
+                    <BookOpen size={22} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold">{r.allTitle}</p>
+                    <p className="text-sm text-ink-muted">{r.allText}</p>
+                  </div>
+                  <ChevronRight
+                    size={18}
+                    aria-hidden="true"
+                    className="shrink-0 text-ink-muted/60"
+                  />
                 </div>
-                <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink-muted/60" />
-              </div>
-            </Link>
-          </GroupedListItem>
-        </GroupedList>
-      </section>
+              </Link>
+            </GroupedListItem>
+          </GroupedList>
+        </section>
+      ) : null}
 
       {/* One food fact a day (ADR-0042), the same as after a rescue on that seed. */}
       <Card variant="tip">
@@ -139,7 +167,7 @@ export function KnowledgePage() {
             {t.everydayTitle}
           </h2>
           <GroupedList>
-            {t.everyday.map((item) => (
+            {everyday.map((item) => (
               <GroupedListItem key={item.title} inset="text">
                 <details className="group">
                   <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-3 font-semibold has-focus-visible:outline-2 has-focus-visible:outline-basil-600 [&::-webkit-details-marker]:hidden">

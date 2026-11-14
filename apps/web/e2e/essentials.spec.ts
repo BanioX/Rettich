@@ -43,6 +43,24 @@ test.describe('a new person', () => {
   });
 });
 
+test.describe('a new person under «Wissen»', () => {
+  test.use({ newPerson: true });
+
+  test('reads only about the essentials, recipes appear with «Kochen»', async ({ page }) => {
+    await page.goto('/knowledge');
+    await expect(page.getByRole('heading', { level: 2, name: 'Rettich im Alltag' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Rezepte' })).toHaveCount(0);
+    await expect(page.getByText('Funktionen', { exact: true })).toBeVisible();
+    await expect(page.getByText('Klimabilanz', { exact: true })).toHaveCount(0);
+
+    await page.goto('/more/extras');
+    await page.getByRole('switch', { name: 'Erweitert' }).click();
+    await page.goto('/knowledge');
+    await expect(page.getByRole('heading', { level: 2, name: 'Rezepte' })).toBeVisible();
+    await expect(page.getByText('Klimabilanz', { exact: true })).toBeVisible();
+  });
+});
+
 test('a person who already uses Rettich keeps every function', async ({ page }) => {
   await page.goto('/more');
   for (const shown of [/^Klimabilanz/, /^Wo ist was\?/, /^Personen/, /^Funktionen.*Erweitert/]) {

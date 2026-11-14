@@ -51,9 +51,9 @@ Prüfung aller Funktionen aus ADR-0048 bis ADR-0094 und der Funktionen ohne eige
 | Mehrere ändern | – | ja (K11) | – | – | – | – | – | ja | – | – |
 | Geschätzte Nährwerte (0064) | – | – | ja (Frischware ohne Etikett) | – | – | – (berechnet) | – (berechnet) | ja | – | – |
 | Packung: was übrig ist (0063) | – | – (Menge als Text) | ja | – | – | – | – (berechnet) | ja | – | – |
-| App-Sperre (0086) | – | – | – | – | – | – | – (bewusst nicht, ADR-0086) | nein (K14) | – | – |
-| Sicherung mit Passwort (0087) | – | – | – | – | – | – | ja (verpackt die Sicherung) | nein (K14) | – | – |
-| Link, Teilen an Rettich, Verknüpfungen (0094) | – (Verknüpfungen öffnen Seiten) | – | – | – | – | – | – (gespeichert erst nach einem Tipp, als normaler Eintrag) | nein (K14) | – | – |
+| App-Sperre (0086) | – | – | – | – | – | – | – (bewusst nicht, ADR-0086) | ja | – | – |
+| Sicherung mit Passwort (0087) | – | – | – | – | – | – | ja (verpackt die Sicherung) | ja | – | – |
+| Link, Teilen an Rettich, Verknüpfungen (0094) | – (Verknüpfungen öffnen Seiten) | – | – | – | – | – | – (gespeichert erst nach einem Tipp, als normaler Eintrag) | ja | – | – |
 | Packung und Inhalt (0066) | – | ja («1 × 10 Stk.», Wisch = Packung) | ja («1 Packung à 10 Stk.», Ring = Stück) | – | – | – | ja (Feld am Artikel) | ja | – | – |
 
 Daten gehen keine verloren: Alle Tabellen stehen in der Sicherung und kommen beim Import zurück; Tests mit Hin und Zurück prüfen das seit K3 für jedes Feld.
@@ -75,5 +75,6 @@ Daten gehen keine verloren: Alle Tabellen stehen in der Sicherung und kommen bei
 | K11 | «Mehrere ändern» kann auch den Platz setzen | erledigt |
 | K12 | Suche in «Alle Rezepte» | offen |
 | K13 | «Steht jetzt auf Nachkaufen» auch nach Töpfen, Check und Verarbeiten | offen |
-| K14 | «Rettich im Alltag» erklärt App-Sperre, Sicherung mit Passwort und «Teilen an Rettich» mit Verknüpfungen | offen |
+| K14 | «Rettich im Alltag» erklärt App-Sperre, Sicherung mit Passwort und «Teilen an Rettich» mit Verknüpfungen | erledigt |
+| K15 | Grundfunktionen und Erweitert (ADR-0095): jede Fläche blendet die Gruppen aus, die nicht eingeschaltet sind; «Rettich im Alltag» erklärt nur, was eingeschaltet ist | Mehr, Start, Wissen erledigt; Vorrat, Artikelseite, Erfassen offen |
 | später | Bilanz und Klimabilanz pro Person; Abzeichen für Ordnung | wartet auf Konten und Sync |

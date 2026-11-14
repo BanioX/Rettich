@@ -15,6 +15,7 @@ import { ClipboardCheck, HardDriveDownload, Snowflake } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useAppData } from '../../app/AppData';
+import { useExtras, isShown } from '../../app/extras';
 import { useMoney } from '../../app/money';
 import { messages } from '../../app/messages.de-CH';
 import { Card } from '../../ui/Card';
@@ -49,6 +50,7 @@ export function TodayPage() {
   // The ritual (ADR-0084) only here: in the Vorrat people sort quickly.
   const swipe = useSwipeOutcome({ ritual: true });
   const attentionOf = useAttention();
+  const extras = useExtras();
   // Read once per visit; a finished check writes it before coming back here.
   const [lastCheck] = useState(readLastCheck);
   const [lastBackup] = useState(readLastBackup);
@@ -100,7 +102,9 @@ export function TodayPage() {
     );
   const total = sumRappen(fridgeValues.map((value) => value.valueRappen));
   const estimated = fridgeValues.some((value) => value.estimated);
-  const showCheck = fridgeValues.length > 0 && checkDue(lastCheck, today);
+  const routines = isShown(extras, 'routines');
+  const insights = isShown(extras, 'insights');
+  const showCheck = routines && fridgeValues.length > 0 && checkDue(lastCheck, today);
   const urgent = urgentItems(expiring);
   const oldestAddedOn = all.reduce<LocalDate | null>((oldest, item) => {
     const added = toLocalDate(item.purchasedAt);
@@ -225,12 +229,13 @@ export function TodayPage() {
 
       {all.length > 0 ? <LocationTiles counts={locationCounts(all, urgent)} /> : null}
 
-      <WeekReview />
+      {/* Extras only when switched on (ADR-0095): the monthly balance is an essential. */}
+      {routines ? <WeekReview /> : null}
       <ImpactCard from={startOfMonth(today)} to={today} />
-      <ImpactSince />
-      <ClimateCard />
+      {insights ? <ImpactSince /> : null}
+      {insights ? <ClimateCard /> : null}
       <FeedbackQuestion />
-      <RecentAchievements />
+      {insights ? <RecentAchievements /> : null}
       {drag.dragging ? <RitualTargets over={drag.over} /> : null}
       {drag.parcel}
       {swipe.toast}
