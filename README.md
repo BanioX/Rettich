@@ -28,7 +28,7 @@ Local-first PWA für Schweizer Haushalte (WGs, Paare, Familien). Rettich zeigt d
 
 ## Was die App heute kann
 
-Unten fünf Tabs: **Start · Vorrat · ＋ Erfassen · Wissen · Mehr** ([ADR-0031](docs/adr/0031-tab-navigation.md), [ADR-0041](docs/adr/0041-knowledge-tab.md)). Hinter ＋ liegen alle Wege in den Vorrat, unter «Wissen» was wie lange hält, unter «Mehr» Auszüge, Journal, Nachkaufen und «Deine Daten». Rezepte sind ein Abschnitt unter «Wissen», kein eigener Tab ([ADR-0048](docs/adr/0048-recipes-return-under-wissen.md), vorher entfernt mit [ADR-0040](docs/adr/0040-no-recipes.md)).
+Fünf Bereiche: **Start · Vorrat · ＋ Erfassen · Wissen · Mehr**, auf dem iPhone und dem iPad hochkant als Tab-Leiste unten, ab 1024 Pixeln (iPad quer, Computer) als Seitenleiste links ([ADR-0031](docs/adr/0031-tab-navigation.md), [ADR-0041](docs/adr/0041-knowledge-tab.md), [ADR-0092](docs/adr/0092-sidebar-on-large-screens.md)). Hinter ＋ liegen alle Wege in den Vorrat, unter «Wissen» was wie lange hält, unter «Mehr» Auszüge, Journal, Nachkaufen und «Deine Daten». Rezepte sind ein Abschnitt unter «Wissen», kein eigener Tab ([ADR-0048](docs/adr/0048-recipes-return-under-wissen.md), vorher entfernt mit [ADR-0040](docs/adr/0040-no-recipes.md)).
 
 | Bereich | Funktion |
 | --- | --- |
@@ -71,7 +71,7 @@ Unten fünf Tabs: **Start · Vorrat · ＋ Erfassen · Wissen · Mehr** ([ADR-00
 
 Die Adresse der App gibt Alban persönlich weiter. Sie steht bewusst nicht im Repo, und die App sagt Suchmaschinen «noindex» ([ADR-0049](docs/adr/0049-public-repo-noindex.md)). Jeder Pull Request bekommt zusätzlich einen eigenen **Vorschau-Link** (Cloudflare schreibt ihn als Kommentar in den PR). Einrichtung und Tipps: [`docs/previews.md`](docs/previews.md).
 
-1. Link öffnen (iPhone: Teilen → «Zum Home-Bildschirm» für App-Gefühl).
+1. Link öffnen und als App hinlegen: iPhone und iPad über Teilen → «Zum Home-Bildschirm», Android über das Chrome-Menü → «App installieren», am Computer in Chrome oder Edge über «Installieren» in der Adresszeile. Jedes Gerät hat seine eigenen Daten.
 2. In einem **Vorschau-Link** eines Pull Requests auf Start **«Beispieldaten laden»** tippen: Ein typischer WG-Kühlschrank erscheint. In der App auf `main` gibt es keine Beispieldaten, dort beginnst du mit einer Quittung oder einem Artikel.
 3. Auf einen Artikel tippen, erfassen, scannen, ausprobieren. Daten bleiben nur auf deinem Gerät.
 

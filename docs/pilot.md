@@ -1,6 +1,6 @@
 # Pilot: Rettich ausprobieren
 
-Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.11.0. Claude gibt den Pilot frei (CLAUDE.md, Prioritäten).
+Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.22.0. Claude gibt den Pilot frei (CLAUDE.md, Prioritäten).
 
 ## Einrichten (5 Minuten pro Person)
 
@@ -9,6 +9,8 @@ Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.11.0. Claud
 2. **Auf den Home-Bildschirm legen:** unten «Teilen», dann «Zum Home-Bildschirm».
    - Das ist wichtig: Nur so behält das iPhone die Daten dauerhaft und startet Rettich offline wie eine App.
 3. Rettich über das neue Symbol öffnen. Ein Konto gibt es noch nicht, alles bleibt auf dem Gerät.
+
+Auf anderen Geräten geht es genauso einfach: iPad wie iPhone (quer erscheint links eine Seitenleiste), Android über das Chrome-Menü → «App installieren», am Computer in Chrome oder Edge über «Installieren» in der Adresszeile. Jedes Gerät hat seine eigenen Daten, siehe «Bekannte Grenzen».
 
 ## Was testen (eine Woche, Kühlschrank zuerst)
 
@@ -21,6 +23,7 @@ Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.11.0. Claud
 | 2–6 | Nach dem Einkauf die Standardartikel mit **«Schnell erfassen»** eintragen | Reicht ein Tipp, stimmen Menge und Ort? |
 | 2–6 | Im Tab **«Wissen»** nachschauen, wie lange etwas hält (**«Haltbarkeit A–Z»**) | Hilft es dir, wenn du unsicher bist? |
 | 2–6 | Hast du etwas falsch eingetragen? Unter «Mehr» › **«Journal»** ändern oder löschen | Findest du den Eintrag schnell? |
+| 2–6 | Nur auf Android: in einer Nachricht einen Einkaufszettel markieren, «Teilen» › **Rettich**, dann «Auf die Liste». Oder lange auf das Rettich-Symbol drücken | Landet der Text richtig auf «Nachkaufen»? |
 | 7 | Den **Kühlschrank-Check** auf «Start» machen, unter «Mehr» einen **Auszug als PDF** erstellen, die «Bilanz» des Monats auf «Start» ansehen (ein Tipp auf einen Kreis zeigt die Einträge im «Journal»), einmal «Alles exportieren» | Würdest du die App weiter nutzen? Was nervt? |
 
 ## Neues Symbol, neues Handy oder neue Adresse
@@ -36,6 +39,7 @@ Genauso geht es beim Handywechsel und später beim Umzug auf eine eigene Adresse
 
 ## Feedback
 
+- Nach einer Woche fragt Rettich auf Start, was gestört hat. Die Antwort bleibt auf dem Gerät; zeig sie Alban oder schick sie mit dem Export.
 - Direkt an Alban: Screenshot plus ein Satz, was du erwartet hast. Alban gibt es an Claude weiter.
 - Wichtig sind vor allem: «Das habe ich nicht gefunden», «Das war mir zu umständlich» und «Das hat nicht gestimmt».
 - Geht nach einem Update gar nichts mehr: zuerst [`notfall.md`](notfall.md), Rettich nicht vom Home-Bildschirm löschen.
@@ -46,8 +50,9 @@ Genauso geht es beim Handywechsel und später beim Umzug auf eine eigene Adresse
 - **Quittungen:** PDFs aus der Coop- und Migros-App werden am genauesten gelesen. Fotos und Screenshots können Ziffern verwechseln: Die Summenprüfung zeigt das, ein Tipp auf den Preis korrigiert ihn. Screenshots in voller Grösse hochladen, nicht über einen Chat verkleinert. Erkennt Rettich den Laden nicht, fragt es «Wo eingekauft?».
 - **Scan im Browser:** Ist es unscharf, das Handy etwas weiter weg halten oder «Code aus Foto lesen» nutzen.
 - **Unbekannte Produkte:** Nicht jeder Barcode ist bei Open Food Facts. Einmal von Hand erfassen, beim nächsten Scan kennt Rettich das Produkt.
-- **Handywechsel:** Export und Import wie oben. Ein laufender Abgleich zwischen Handys kommt mit den Konten.
-- **Keine Push-Mitteilungen:** Die App zeigt das Dringende beim Öffnen.
+- **Handywechsel und mehrere Geräte:** iPhone, iPad und Computer haben je eigene Daten. Export und Import wie oben übertragen sie. Ein laufender Abgleich zwischen Geräten kommt mit den Konten.
+- **Keine Push-Mitteilungen:** Die App zeigt das Dringende beim Öffnen. Für einen einzelnen Artikel trägt «Im Kalender erinnern» auf der Artikelseite einen Termin in deinen Kalender ein.
+- **Siri:** Ein Kurzbefehl, der einen Rettich-Link öffnet, landet auf dem iPhone in Safari und damit nicht in den Daten der App auf dem Home-Bildschirm (ADR-0094).
 
 ## Daten und Datenschutz
 

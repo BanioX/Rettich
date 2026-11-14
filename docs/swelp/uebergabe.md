@@ -15,7 +15,7 @@ Steht nicht in diesem Repo. Ideen, Reihenfolge und offene Fragen an Alban liegen
 
 ## Offen im Code
 
-Nichts: Alle Branches dieser Sitzung sind gemergt (bis #337).
+Keine offenen Branches: Alles dieser Sitzung ist gemergt, zuletzt die Nachführung der Doku nach 0.22.0. Offene Aufträge zu den Flächen (K7, K12, K13, K14) stehen in [`flaechen.md`](../flaechen.md).
 
 ## Arbeitsweise, die sich bewährt hat
 

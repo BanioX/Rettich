@@ -19,9 +19,9 @@ Eine neue Funktion ist erst fertig, wenn sie auf **jeder Fläche** steht, auf de
 | 9 | Suche | Namenssuche, «Wo ist was?» | Findet man es? |
 | 10 | Abzeichen | `achievements-catalogue.ts` | Lohnt es sich, dafür eines zu vergeben? |
 
-## Stand 12.11.2026
+## Stand 14.11.2026
 
-Prüfung aller Funktionen aus ADR-0048 bis ADR-0066 und der Funktionen ohne eigenes ADR. «ja» heisst vorhanden, «nein» heisst Lücke, «–» heisst gehört dort nicht hin. In Klammern: der Auftrag, der die Lücke schliesst.
+Prüfung aller Funktionen aus ADR-0048 bis ADR-0094 und der Funktionen ohne eigenes ADR. Seitenübergänge (ADR-0088), Zurückwischen (ADR-0091), Seitenleiste (ADR-0092) und Sheets als Dialog (ADR-0093) ändern die Form aller Flächen, nicht ihren Inhalt; sie haben keine eigene Zeile, E2E-Tests prüfen sie in vier Bildschirmgrössen. «ja» heisst vorhanden, «nein» heisst Lücke, «–» heisst gehört dort nicht hin. In Klammern: der Auftrag, der die Lücke schliesst.
 
 | Funktion | Start | Liste | Artikel | Journal | Bilanz | PDF | Export | Wissen | Suche | Abzeichen |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -51,6 +51,9 @@ Prüfung aller Funktionen aus ADR-0048 bis ADR-0066 und der Funktionen ohne eige
 | Mehrere ändern | – | ja (K11) | – | – | – | – | – | ja | – | – |
 | Geschätzte Nährwerte (0064) | – | – | ja (Frischware ohne Etikett) | – | – | – (berechnet) | – (berechnet) | ja | – | – |
 | Packung: was übrig ist (0063) | – | – (Menge als Text) | ja | – | – | – | – (berechnet) | ja | – | – |
+| App-Sperre (0086) | – | – | – | – | – | – | – (bewusst nicht, ADR-0086) | nein (K14) | – | – |
+| Sicherung mit Passwort (0087) | – | – | – | – | – | – | ja (verpackt die Sicherung) | nein (K14) | – | – |
+| Link, Teilen an Rettich, Verknüpfungen (0094) | – (Verknüpfungen öffnen Seiten) | – | – | – | – | – | – (gespeichert erst nach einem Tipp, als normaler Eintrag) | nein (K14) | – | – |
 | Packung und Inhalt (0066) | – | ja («1 × 10 Stk.», Wisch = Packung) | ja («1 Packung à 10 Stk.», Ring = Stück) | – | – | – | ja (Feld am Artikel) | ja | – | – |
 
 Daten gehen keine verloren: Alle Tabellen stehen in der Sicherung und kommen beim Import zurück; Tests mit Hin und Zurück prüfen das seit K3 für jedes Feld.
@@ -72,4 +75,5 @@ Daten gehen keine verloren: Alle Tabellen stehen in der Sicherung und kommen bei
 | K11 | «Mehrere ändern» kann auch den Platz setzen | erledigt |
 | K12 | Suche in «Alle Rezepte» | offen |
 | K13 | «Steht jetzt auf Nachkaufen» auch nach Töpfen, Check und Verarbeiten | offen |
+| K14 | «Rettich im Alltag» erklärt App-Sperre, Sicherung mit Passwort und «Teilen an Rettich» mit Verknüpfungen | offen |
 | später | Bilanz und Klimabilanz pro Person; Abzeichen für Ordnung | wartet auf Konten und Sync |

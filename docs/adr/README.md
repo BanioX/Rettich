@@ -4,7 +4,7 @@ Jeder Entscheid mit Folgen steht hier als eigene Datei `NNNN-titel.md` (ADR-0001
 
 **Pflege:** Wer ein ADR anlegt oder dessen Status ändert, führt diese Tabelle im selben PR nach. Ein abgelöstes ADR bleibt als Verlauf stehen, seine Statuszeile nennt das ADR, das es ablöst.
 
-**Stand:** 12.11.2026, 66 Entscheide.
+**Stand:** 14.11.2026, 94 Entscheide.
 
 | Nr. | Titel | Status | Datum |
 | --- | --- | --- | --- |

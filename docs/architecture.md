@@ -1,6 +1,6 @@
 # Rettich – Architektur: heute bauen, morgen skalieren
 
-> Stand: 8. November 2026 (Version 0.10.0 und folgende PRs). Auftrag von Alban: «Denke gross, erweiterbar, wartbar, state of the art, skalierbar bis Unicorn.»
+> Stand: 8. November 2026 (Version 0.10.0), nachgeführt am 14. November 2026 (Version 0.22.0). Auftrag von Alban: «Denke gross, erweiterbar, wartbar, state of the art, skalierbar bis Unicorn.»
 > Entscheide im Detail: [`adr/`](./adr/). Stand: [`plan.md`](./plan.md).
 
 ## 0. Drei Schichten ([ADR-0034](./adr/0034-three-layers.md))
@@ -48,7 +48,7 @@ flowchart TB
 | Thema | Entscheid | Warum |
 | --- | --- | --- |
 | Framework | **React 19 + TypeScript + Vite** (bleibt) | Grösstes Ökosystem, beste Talentbasis, gleiche Sprache wie Backend und Kern. Angular wäre ebenfalls robust, bringt hier aber keinen Vorteil und würde den bestehenden Stand verwerfen. |
-| App-Form | **PWA** | Eine Codebasis für Web, iOS und Android. |
+| App-Form | **PWA** | Eine Codebasis für Web, iOS und Android, vom iPhone SE bis zum Computer: Tab-Leiste oder Seitenleiste, Sheet oder Dialog je nach Breite (ADR-0092, ADR-0093). Das Manifest bringt Verknüpfungen am App-Symbol und «Teilen an Rettich» auf Android, ohne Server (ADR-0094). |
 | Daten im Gerät | IndexedDB (Dexie) | Offline, schnell, gross genug für jahrelange Vorräte. |
 | Design | Eigenes Design-System (Tokens, Bausteine, Styleguide) | Einheitlich, zugänglich, schnell erweiterbar. |
 

@@ -16,7 +16,7 @@ Was der Code ausserhalb seiner selbst bewirkt: ans Netz senden, auf dem Gerät s
 
 | Kennung | Ort | Schlüssel | Was | Wie lange |
 | --- | --- | --- | --- | --- |
-| SE-10 | IndexedDB | `fridgeai` | Haushalt, Personen (nur Namen), Vorrat, Abschlüsse, Einkaufsliste, Quittungen (Zeilen, nie Bilder), Ereignisse, Produkt-Cache, Packungsbilder | bis zum Löschen in «Mehr» (ADR-0020) |
+| SE-10 | IndexedDB | `fridgeai` | Haushalt, Personen (nur Namen), Vorrat, Abschlüsse, Einkaufsliste, Quittungen (Zeilen, nie Bilder), eigene Rezepte, Plätze mit verkleinertem Foto, Antworten auf die Frage nach einer Woche, Ereignisse, Produkt-Cache, Packungsbilder | bis zum Löschen in «Mehr» (ADR-0020) |
 | SE-11 | localStorage | `fridgeai:last-fridge-check` | Tag des letzten Kühlschrank-Checks | bis zum Löschen der Website-Daten |
 | SE-12 | sessionStorage | `fridgeai:reloaded-for-update` | Zeitpunkt des letzten Neuladens für ein Update | bis der Tab zu ist |
 | SE-13 | Cache Storage | Service Worker (Workbox) | App-Dateien, OCR-Modelle und der Produktkatalog (`/catalog/*.json`, Cache `catalog`) für den Offline-Betrieb | bis zum nächsten Update; der Katalog wird im Hintergrund erneuert |
@@ -38,3 +38,6 @@ Was der Code ausserhalb seiner selbst bewirkt: ans Netz senden, auf dem Gerät s
 | SE-24 | Dauerhafter Speicher (`navigator.storage.persist`) | Browser soll die Daten nicht bei Platzmangel löschen | beim Start |
 | SE-25 | Kamera-App / Fotoauswahl (`capture`) für Plätze | Foto vom Schrank oder Fach («Wo ist was?») | nur nach einem Tipp. Das verkleinerte Foto bleibt auf dem Gerät und gehört zum Export, ADR-0056 |
 | SE-29 | Gerät entsperren (WebAuthn, `navigator.credentials`) | App-Sperre: Face ID, Touch ID oder Code des Geräts bestätigen; kein Server, nichts verlässt das Gerät, ADR-0086 | nur nach einem Tipp, und beim Öffnen, wenn die Sperre an ist |
+| SE-32 | Herunterladen einer Kalenderdatei (`.ics`) | «Im Kalender erinnern»: ein Termin am Abend vor dem Datum, auf dem Gerät erstellt; die Kalender-App des Geräts übernimmt ihn, kein Server, ADR-0090 | nur nach einem Tipp |
+| SE-33 | Teilen an Rettich (`share_target` im Manifest) | Android zeigt Rettich im Teilen-Menü; geteilter Text füllt das Feld der Einkaufsliste und wird erst mit einem Tipp gespeichert, ein geteilter Link bleibt weg, ADR-0094 | wenn jemand in einer anderen App Rettich als Ziel wählt |
+| SE-34 | Verknüpfungen am App-Symbol (`shortcuts` im Manifest) | Lange drücken (Android) oder Rechtsklick im Dock oder in der Taskleiste: Einkaufsliste, Quittung, Erfassen oder Kühlschrank-Check direkt öffnen; nie die Kamera, ADR-0094 | wenn die Person eine Verknüpfung wählt |
