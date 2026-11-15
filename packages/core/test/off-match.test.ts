@@ -74,6 +74,30 @@ describe('rankReceiptHits', () => {
     expect(best?.confidence).toBe('maybe');
   });
 
+  it('never matches on house brand words alone (Alban, 14.11.2026)', () => {
+    expect(
+      rankReceiptHits('M-Classic Kaffee Creme 5dl', [
+        hit('7610000000035', 'Creme Brulee', 'M-Classic', '4 x 100 g'),
+      ]),
+    ).toBeNull();
+    expect(
+      rankReceiptHits('Prix Garantie Tomaten gehackt', [
+        hit('7610000000042', 'Thon in Öl', 'Prix Garantie'),
+      ]),
+    ).toBeNull();
+  });
+
+  it('needs two shared product words when the line names more than one', () => {
+    expect(
+      rankReceiptHits('Naturaplan Joghurt Erdbeer 180g', [
+        hit('7610807000023', 'Joghurt Mocca', 'Naturaplan', '180 g'),
+      ]),
+    ).toBeNull();
+    expect(
+      rankReceiptHits('Rucola 100g', [hit('7610000000059', 'Rucola', 'Coop', '100 g')]),
+    ).toMatchObject({ hit: { name: 'Rucola' }, confidence: 'sure' });
+  });
+
   it('finds nothing when the words do not fit', () => {
     expect(rankReceiptHits('Guacamole Chunky', [hit('7610000000011', 'Tomatensauce')])).toBeNull();
     expect(rankReceiptHits('Guacamole Chunky', [])).toBeNull();
