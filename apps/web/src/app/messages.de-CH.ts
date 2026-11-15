@@ -363,6 +363,10 @@ export const messages = {
       wasted: 'Entsorgt',
       process: 'Verarbeiten',
       rebuy: 'Nachkaufen',
+      delete: 'Löschen',
+      /** A wrong entry removed from the list: «Testbuch gelöscht.» / «3 Artikel gelöscht.» */
+      deletedOne: (name: string) => `${name} gelöscht.`,
+      deletedMany: (n: number) => `${String(n)} Artikel gelöscht.`,
       /** «Joghurt verwertet.» / «3 Artikel verwertet.» */
       doneOne: (name: string, outcome: 'eaten' | 'wasted') =>
         `${name} ${outcome === 'eaten' ? 'verwertet' : 'entsorgt'}.`,

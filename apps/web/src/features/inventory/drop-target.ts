@@ -1,7 +1,7 @@
 import { StorageLocationSchema, type StorageLocation } from '@fridgeai/core';
 
-/** The pots that settle the selection (ADR-0055). Freezing is the Tiefkühler tab. */
-export const SETTLE_ACTIONS = ['eaten', 'wasted', 'process', 'rebuy'] as const;
+/** The pots that settle the selection (ADR-0055). Freezing is the Tiefkühler tab. «Löschen» removes a wrong entry; it is no outcome. */
+export const SETTLE_ACTIONS = ['eaten', 'wasted', 'process', 'rebuy', 'delete'] as const;
 export type SettleAction = (typeof SETTLE_ACTIONS)[number];
 
 /** Where a dragged parcel can land: a storage-location tab or a pot. */

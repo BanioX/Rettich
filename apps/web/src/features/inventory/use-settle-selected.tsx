@@ -26,20 +26,24 @@ interface Toast {
   hint?: string;
   /** Event ids of the outcomes just recorded; `null` when there is nothing to undo. */
   undo: Id[] | null;
+  /** The undo restores deleted items (`undo` holds item ids) instead of undoing outcomes. */
+  restore?: true;
 }
 
 /**
  * The pots (ADR-0055): settles the chosen items with one tap or drop. «Verwertet» and «Entsorgt»
  * record the whole rest of each item with `inventory.recordOutcome`; food that was about to go off
  * first asks once «Ohne Rettich im Abfall gelandet?» (ADR-0039). «Nachkaufen» puts the products on
- * the shopping list and leaves the stock alone. `settle` resolves to `true` only when everything
- * worked, so the caller ends select mode; otherwise what failed is named and stays selected.
+ * the shopping list and leaves the stock alone. «Löschen» removes wrong entries (soft delete, no
+ * outcome, no statistics) and can be undone by restoring them. `settle` resolves to `true` only
+ * when everything worked, so the caller ends select mode; otherwise what failed is named and
+ * stays selected.
  */
 export function useSettleSelected(): {
   busy: boolean;
   settle: (
     items: readonly InventoryItemView[],
-    action: 'eaten' | 'wasted' | 'rebuy',
+    action: 'eaten' | 'wasted' | 'rebuy' | 'delete',
   ) => Promise<boolean>;
   toast: ReactNode;
 } {
@@ -168,13 +172,55 @@ export function useSettleSelected(): {
     [householdId, ids, shopping],
   );
 
+  const remove = useCallback(
+    async (items: readonly InventoryItemView[]) => {
+      setBusy(true);
+      const done: InventoryItemView[] = [];
+      const failed: string[] = [];
+      for (const item of items) {
+        try {
+          await inventory['inventory.deleteItem']({
+            commandId: ids.next(),
+            householdId,
+            itemId: item.id,
+          });
+          done.push(item);
+        } catch {
+          failed.push(item.name);
+        }
+      }
+      const t = messages.inventory.settle;
+      const parts = [
+        done.length === 0
+          ? ''
+          : done.length === 1
+            ? t.deletedOne(done[0]?.name ?? '')
+            : t.deletedMany(done.length),
+        failed.length === 0 ? '' : t.failedSome(failed),
+      ].filter((part) => part !== '');
+      setToast({
+        text: parts.join(' '),
+        undo: done.length === 0 ? null : done.map((item) => item.id),
+        ...(done.length === 0 ? {} : { restore: true as const }),
+      });
+      return failed.length === 0;
+    },
+    [householdId, ids, inventory],
+  );
+
   const settle = useCallback(
-    async (items: readonly InventoryItemView[], action: 'eaten' | 'wasted' | 'rebuy') => {
+    async (
+      items: readonly InventoryItemView[],
+      action: 'eaten' | 'wasted' | 'rebuy' | 'delete',
+    ) => {
       if (running.current || items.length === 0) {
         return false;
       }
       running.current = true;
       try {
+        if (action === 'delete') {
+          return await remove(items);
+        }
         return action === 'rebuy' ? await rebuy(items) : await settleOutcome(items, action);
       } catch {
         setToast({ text: messages.inventory.select.failed, undo: null });
@@ -184,18 +230,30 @@ export function useSettleSelected(): {
         setBusy(false);
       }
     },
-    [rebuy, settleOutcome],
+    [rebuy, remove, settleOutcome],
   );
 
-  const undo = async (eventIds: readonly Id[]) => {
+  const undo = async (itemOrEventIds: readonly Id[], restore: boolean) => {
     if (running.current) {
       return;
     }
     running.current = true;
     setBusy(true);
     try {
-      for (const eventId of eventIds) {
-        await inventory['inventory.undoOutcome']({ commandId: ids.next(), householdId, eventId });
+      for (const id of itemOrEventIds) {
+        if (restore) {
+          await inventory['inventory.restoreItem']({
+            commandId: ids.next(),
+            householdId,
+            itemId: id,
+          });
+        } else {
+          await inventory['inventory.undoOutcome']({
+            commandId: ids.next(),
+            householdId,
+            eventId: id,
+          });
+        }
       }
       setToast(null);
     } catch {
@@ -232,7 +290,7 @@ export function useSettleSelected(): {
                     disabled={busy}
                     className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-3 font-semibold text-white transition-colors hover:bg-white/10 disabled:opacity-50"
                     onClick={() => {
-                      void undo(toast.undo ?? []);
+                      void undo(toast.undo ?? [], toast.restore === true);
                     }}
                   >
                     <Undo2 size={20} aria-hidden="true" />
