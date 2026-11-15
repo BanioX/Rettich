@@ -556,7 +556,7 @@ export function InventoryPage() {
                 </button>
                 <div className="flex items-center gap-2">
                   {/* Always mounted, so screen readers announce the changing count. */}
-                  <p role="status" className="font-semibold">
+                  <p aria-live="polite" className="font-semibold">
                     {chosen.length > 0 ? t.select.count(chosen.length) : null}
                   </p>
                   {chosen.length > 0 ? (
