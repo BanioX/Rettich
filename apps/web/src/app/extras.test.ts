@@ -7,6 +7,7 @@ import {
   isShown,
   parseExtras,
   readExtras,
+  shownGroups,
   startWithEssentials,
   useExtra,
   writeExtras,
@@ -41,6 +42,16 @@ describe('isShown', () => {
     const noSpots = { on: true, groups: { ...ALL_EXTRAS.groups, spots: false } };
     expect(isShown(noSpots, 'spots')).toBe(false);
     expect(isShown(noSpots, 'cooking')).toBe(true);
+  });
+});
+
+describe('shownGroups', () => {
+  it('answers for every group at once', () => {
+    expect(Object.values(shownGroups(ESSENTIALS)).every((shown) => !shown)).toBe(true);
+    expect(shownGroups({ on: true, groups: { ...ALL_EXTRAS.groups, nutrition: false } })).toEqual({
+      ...ALL_EXTRAS.groups,
+      nutrition: false,
+    });
   });
 });
 

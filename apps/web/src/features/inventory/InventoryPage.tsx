@@ -24,6 +24,7 @@ import { factFor } from '../knowledge/food-facts';
 import { GROUPED_ROW_LINK, GroupedList, GroupedListItem } from '../../ui/GroupedList';
 import { InventoryItemRow } from './InventoryItemRow';
 import { useAttention } from './use-attention';
+import { useExtra } from '../../app/extras';
 import { useInventoryView } from './inventory-view';
 import { groupByKind } from './item-kinds';
 import { KindSection, KindTiles, ViewSwitch } from './KindView';
@@ -243,7 +244,10 @@ export function InventoryPage() {
   const editor = useEditSelected();
   const members = useMembers();
   const [editing, setEditing] = useState(false);
-  const [view, setView] = useInventoryView();
+  const [chosenView, setView] = useInventoryView();
+  // Selecting, dragging and «Nach Art» belong to «Ordnen» (ADR-0095).
+  const organize = useExtra('organize');
+  const view = organize ? chosenView : 'expiry';
   const navigate = useNavigate();
 
   const items = useLiveQuery(
@@ -323,7 +327,7 @@ export function InventoryPage() {
   };
 
   const drag = useDragToLocation({
-    enabled: !mover.busy && !settler.busy,
+    enabled: organize && !mover.busy && !settler.busy,
     selecting: selection.active,
     from: selected,
     begin: (id) => {
@@ -418,13 +422,15 @@ export function InventoryPage() {
     <div className="space-y-5 pb-8">
       <div className="flex items-center justify-between gap-3">
         <h1 className="large-title">{messages.pages.inventory}</h1>
-        <button
-          type="button"
-          onClick={selection.active ? selection.stop : selection.start}
-          className="-mr-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl px-2 font-semibold text-basil-700 transition-colors hover:bg-surface-muted"
-        >
-          {selection.active ? t.select.done : t.select.enter}
-        </button>
+        {organize ? (
+          <button
+            type="button"
+            onClick={selection.active ? selection.stop : selection.start}
+            className="-mr-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl px-2 font-semibold text-basil-700 transition-colors hover:bg-surface-muted"
+          >
+            {selection.active ? t.select.done : t.select.enter}
+          </button>
+        ) : null}
       </div>
 
       <ClosedNotice />
@@ -520,7 +526,7 @@ export function InventoryPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {selection.active ? null : <ViewSwitch view={view} onChange={setView} />}
+            {selection.active || !organize ? null : <ViewSwitch view={view} onChange={setView} />}
             {selection.active ? (
               <div className="flex flex-wrap items-center justify-between gap-x-3">
                 <button

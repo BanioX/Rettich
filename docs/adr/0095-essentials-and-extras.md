@@ -28,3 +28,12 @@ Rettich hat in einer Woche viele Funktionen bekommen: Personen, Plätze mit Foto
 - **Start:** Kühlschrank-Check und «Deine Woche» gehören zu «Routinen»; «Seit deinem ersten Monat», Klimabilanz und neue Abzeichen zu «Auswertung». «Heute retten», die Bilanz des Monats, die Lagerort-Kacheln, der Einfrier-Tipp und der Sicherungs-Hinweis sind Grundfunktionen.
 - **«Im Blick»** gehört zu «Hinweise» und verschwindet an einer Stelle (`useAttention`) für Start, Vorrat und Artikelseite.
 - **Wissen:** Die Rezepte gehören zu «Kochen». «Rettich im Alltag» zeigt nur, was eingeschaltet ist; welche Erklärung zu welcher Gruppe gehört, steht in `KnowledgePage.tsx` (`EVERYDAY_EXTRA`), nicht im Textkatalog. Neu erklärt sind App-Sperre, Sicherung mit Passwort, «Teilen an Rettich» und «Funktionen» (K14).
+
+## Nachtrag (15.11.2026): Vorrat, Artikelseite, Erfassen, Nachkaufen
+
+- **Vorrat:** «Auswählen», «Nach Art» und das Ziehen zwischen Lagerorten gehören zu «Ordnen»; ohne «Ordnen» zeigt der Vorrat «Nach Ablauf», auch wenn auf dem Gerät «Nach Art» gespeichert ist. Die Initialen in der Zeile gehören zu «Haushalt», der Name des Platzes statt des Lagerorts zu «Plätze».
+- **Artikelseite:** «Platz festhalten» (Plätze), «Gehört» (Haushalt), Nährwerte und Allergene (Nährwerte), «Verarbeiten» und Fertigprodukt oder Zutat (Kochen), «Immer da haben» (Hinweise), «Im Kalender erinnern» (Routinen). Grundfunktionen bleiben: Verwertet oder Entsorgt mit Menge, Datum, Haltbarkeit, Packung und Inhalt, Weitere Packungen, Einfrieren, Bearbeiten, Öffnen, Löschen.
+- **Erfassen:** «Reste erfassen» gehört zu «Kochen»; «Gehört» im Formular und in «Mehrere ändern» zu «Haushalt»; Plätze in «Mehrere ändern» und in «Einräumen» zu «Plätze».
+- **Nachkaufen:** «Bald wieder nötig» und «Entsorgst du oft» gehören zu «Hinweise».
+- Der Kühlschrank-Check und die PDF-Auszüge zeigen Daten so, wie sie gespeichert sind: Ihre Einstiege sind ohnehin Extras («Routinen», «Auswertung»).
+

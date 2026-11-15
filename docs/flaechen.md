@@ -76,5 +76,5 @@ Daten gehen keine verloren: Alle Tabellen stehen in der Sicherung und kommen bei
 | K12 | Suche in «Alle Rezepte» | offen |
 | K13 | «Steht jetzt auf Nachkaufen» auch nach Töpfen, Check und Verarbeiten | offen |
 | K14 | «Rettich im Alltag» erklärt App-Sperre, Sicherung mit Passwort und «Teilen an Rettich» mit Verknüpfungen | erledigt |
-| K15 | Grundfunktionen und Erweitert (ADR-0095): jede Fläche blendet die Gruppen aus, die nicht eingeschaltet sind; «Rettich im Alltag» erklärt nur, was eingeschaltet ist | Mehr, Start, Wissen erledigt; Vorrat, Artikelseite, Erfassen offen |
+| K15 | Grundfunktionen und Erweitert (ADR-0095): jede Fläche blendet die Gruppen aus, die nicht eingeschaltet sind; «Rettich im Alltag» erklärt nur, was eingeschaltet ist | erledigt |
 | später | Bilanz und Klimabilanz pro Person; Abzeichen für Ordnung | wartet auf Konten und Sync |

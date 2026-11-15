@@ -30,6 +30,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { useAppData } from '../../app/AppData';
 import { useMoney } from '../../app/money';
 import { messages } from '../../app/messages.de-CH';
+import { useExtra } from '../../app/extras';
 import { BackLink } from '../../ui/BackLink';
 import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
@@ -129,7 +130,9 @@ export function AddItemPage() {
   /** «Gehört» (ADR-0058): everyone's unless the person marks it; only asked with two or more people. */
   const [ownerChoice, setOwnerChoice] = useState<Owner>('shared');
   const members = useMembers();
-  const askOwner = members !== undefined && members.length >= 2;
+  // «Gehört» belongs to «Haushalt» (ADR-0095).
+  const household = useExtra('household');
+  const askOwner = household && members !== undefined && members.length >= 2;
   const ownerName = askOwner
     ? members.find((member) => member.id === ownerChoice)?.displayName
     : undefined;
