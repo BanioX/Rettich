@@ -15,8 +15,9 @@ test.describe('a new person', () => {
       await expect(more.getByRole('link', { name: hidden })).toHaveCount(0);
     }
 
-    await more.getByRole('link', { name: /^Funktionen.*Grundfunktionen/ }).click();
+    await more.getByRole('link', { name: /^Funktionen.*Basis/ }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Funktionen' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Immer dabei' })).toContainText('Heute retten');
     const extended = page.getByRole('switch', { name: 'Erweitert' });
     await expect(extended).toHaveAttribute('aria-checked', 'false');
     await expect(page.getByRole('switch', { name: 'Auswertung' })).toHaveCount(0);
@@ -39,7 +40,7 @@ test.describe('a new person', () => {
     await expect(more.getByRole('link', { name: /^Wo ist was\?/ })).toBeVisible();
     await expect(more.getByRole('link', { name: /^Personen/ })).toBeVisible();
     await expect(more.getByRole('link', { name: /^Klimabilanz/ })).toHaveCount(0);
-    await expect(more.getByRole('link', { name: /^Funktionen.*Erweitert/ })).toBeVisible();
+    await expect(more.getByRole('link', { name: /^Funktionen.*Eigene Auswahl/ })).toBeVisible();
   });
 });
 

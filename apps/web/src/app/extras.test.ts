@@ -4,6 +4,7 @@ import {
   ALL_EXTRAS,
   ESSENTIALS,
   EXTRA_GROUPS,
+  extrasLevel,
   isShown,
   parseExtras,
   readExtras,
@@ -42,6 +43,18 @@ describe('isShown', () => {
     const noSpots = { on: true, groups: { ...ALL_EXTRAS.groups, spots: false } };
     expect(isShown(noSpots, 'spots')).toBe(false);
     expect(isShown(noSpots, 'cooking')).toBe(true);
+  });
+});
+
+describe('extrasLevel', () => {
+  it('names Basis, Erweitert and an own choice', () => {
+    expect(extrasLevel(ESSENTIALS)).toBe('basis');
+    expect(extrasLevel(ALL_EXTRAS)).toBe('extended');
+    expect(extrasLevel({ on: true, groups: { ...ALL_EXTRAS.groups, spots: false } })).toBe(
+      'custom',
+    );
+    const nothing = Object.fromEntries(EXTRA_GROUPS.map((group) => [group, false]));
+    expect(extrasLevel({ on: true, groups: { ...ALL_EXTRAS.groups, ...nothing } })).toBe('basis');
   });
 });
 

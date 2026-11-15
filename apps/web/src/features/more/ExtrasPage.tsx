@@ -7,8 +7,8 @@ import { Switch } from '../../ui/Switch';
 const t = messages.extras;
 
 /**
- * «Mehr › Funktionen» (ADR-0095): one switch for «Erweitert», under it every group of extras on
- * its own, like the iOS settings. The choice belongs to this device and changes no data.
+ * «Mehr › Funktionen» (ADR-0095): what «Basis» always shows, one switch for «Erweitert», under it
+ * every group of extras on its own, like the iOS settings. The choice belongs to this device and changes no data.
  */
 export function ExtrasPage() {
   const extras = useExtras();
@@ -20,6 +20,15 @@ export function ExtrasPage() {
         <h1 className="large-title">{messages.pages.extras}</h1>
       </div>
       <p className="text-ink-muted">{t.intro}</p>
+
+      <section aria-labelledby="extras-basis" className="space-y-2">
+        <h2 id="extras-basis" className="px-4 text-sm font-semibold text-ink-muted uppercase">
+          {t.basisTitle}
+        </h2>
+        <GroupedList>
+          <GroupedListItem className="px-4 py-3">{t.basis}</GroupedListItem>
+        </GroupedList>
+      </section>
 
       <GroupedList>
         <GroupedListItem className="space-y-1 px-4 py-3">

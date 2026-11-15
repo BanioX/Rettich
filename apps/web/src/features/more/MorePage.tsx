@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAppData } from '../../app/AppData';
-import { isShown, useExtras, type ExtraGroup } from '../../app/extras';
+import { extrasLevel, isShown, useExtras, type ExtraGroup } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { Card } from '../../ui/Card';
 import { MenuList, type MenuEntry } from '../../ui/MenuList';
@@ -128,7 +128,7 @@ export function MorePage() {
           to: '/more/extras',
           icon: SlidersHorizontal,
           title: messages.pages.extras,
-          detail: t.extrasDetail(extras.on),
+          detail: t.extrasDetail[extrasLevel(extras)],
         },
       ],
     },
