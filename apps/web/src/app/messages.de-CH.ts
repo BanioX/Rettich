@@ -964,7 +964,7 @@ export const messages = {
       },
       {
         title: 'Sicherung',
-        text: 'Alles bleibt auf diesem Gerät. Darum lohnt sich ab und zu ein Export unter «Mehr» bei «Mitnehmen und löschen». So gehen deine Daten nicht verloren, wenn das Gerät ausfällt.',
+        text: 'Alles bleibt auf diesem Gerät. Darum lohnt sich ab und zu ein Export unter «Mehr» bei «Deine Daten». So gehen deine Daten nicht verloren, wenn das Gerät ausfällt.',
       },
       {
         title: 'Nährwerte bei Frischem',
@@ -973,6 +973,22 @@ export const messages = {
       {
         title: 'Was von der Packung übrig ist',
         text: 'Bei Stückware wie Eiern oder Käsescheiben zeigt die Artikelseite einen Ring mit einem Teil pro Stück, zum Beispiel «7 von 10 übrig». Tippst du auf den Ring, ist ein Stück verwertet; hältst du ihn gedrückt, kannst du ein Stück entsorgen oder das letzte zurücklegen. Käsescheiben zählt Rettich als Packung: Ein Wisch in der Liste nimmt die ganze Packung, der Ring eine Scheibe.',
+      },
+      {
+        title: 'Sicherung mit Passwort',
+        text: 'Beim Export kannst du «Mit Passwort schützen» wählen. Rettich verschlüsselt die Datei auf dem Gerät, beim Import fragt es nach dem Passwort. Ohne Passwort lässt sich die Datei nicht öffnen.',
+      },
+      {
+        title: 'App-Sperre',
+        text: 'Unter «Mehr» bei «Deine Daten» kannst du Rettich sperren. Dann öffnet es sich erst nach Face ID, Touch ID oder dem Code deines Geräts. Das prüft das Gerät selbst, ohne Server.',
+      },
+      {
+        title: 'Teilen an Rettich',
+        text: 'Auf Android steht Rettich im Teilen-Menü: Teilst du einen Text, etwa einen Einkaufszettel aus einer Nachricht, landet er bei «Nachkaufen», und ein Tipp auf «Auf die Liste» übernimmt ihn. Lange drücken auf das Rettich-Symbol öffnet die Einkaufsliste, die Quittung, «Erfassen» oder den Kühlschrank-Check direkt.',
+      },
+      {
+        title: 'Funktionen',
+        text: 'Rettich zeigt zuerst das Wichtigste. Unter «Mehr» bei «Funktionen» schaltest du mit «Erweitert» weitere Gruppen dazu, jede einzeln. Ausblenden löscht nichts.',
       },
     ],
     guideTitle: 'Haltbarkeit A–Z',

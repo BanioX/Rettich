@@ -4,9 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it } from 'vitest';
 import { AppDataProvider } from '../../app/AppData';
+import { ESSENTIALS, writeExtras } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { testDb } from '../../data/test-helpers';
-import { KnowledgePage } from './KnowledgePage';
+import { EVERYDAY_EXTRA, KnowledgePage } from './KnowledgePage';
 
 const t = messages.knowledge;
 
@@ -41,6 +42,24 @@ describe('KnowledgePage «Rettich im Alltag»', () => {
         'Was von der Packung übrig ist',
       ]),
     );
+  });
+
+  it('explains only what is switched on, the essentials always (ADR-0095)', async () => {
+    writeExtras(ESSENTIALS);
+    const section = await openGroup();
+    for (const { title } of t.everyday) {
+      const shown = EVERYDAY_EXTRA[title] === undefined;
+      expect(within(section).queryByText(title) !== null, title).toBe(shown);
+    }
+    expect(within(section).getByText('Funktionen')).toBeTruthy();
+    expect(screen.queryByRole('heading', { level: 2, name: messages.recipes.title })).toBeNull();
+  });
+
+  it('maps every extra entry to a title that exists', () => {
+    const titles = new Set<string>(t.everyday.map((item) => item.title));
+    for (const title of Object.keys(EVERYDAY_EXTRA)) {
+      expect(titles.has(title), title).toBe(true);
+    }
   });
 
   it('opens an entry on a tap on its native summary and shows its text', async () => {

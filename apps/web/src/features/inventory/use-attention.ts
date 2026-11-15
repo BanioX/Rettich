@@ -8,6 +8,7 @@ import {
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback } from 'react';
 import { useAppData } from '../../app/AppData';
+import { useExtra } from '../../app/extras';
 
 const NOT_IM_BLICK: Attention = { reasons: [] };
 
@@ -27,8 +28,10 @@ export function useAttention(): (item: AttentionItem) => Attention {
       wastedTimes: new Map(habits.map((habit) => [habit.categoryId, habit.times])),
     };
   }, [householdId, today]);
+  // «Im Blick» belongs to the extra group «Hinweise» (ADR-0095): off, no item carries the {i}.
+  const shown = useExtra('hints');
   return useCallback(
-    (item) => (context === undefined ? NOT_IM_BLICK : attentionOf(item, context)),
-    [context],
+    (item) => (!shown || context === undefined ? NOT_IM_BLICK : attentionOf(item, context)),
+    [context, shown],
   );
 }
