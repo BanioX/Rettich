@@ -104,3 +104,4 @@ Jeder Entscheid mit Folgen steht hier als eigene Datei `NNNN-titel.md` (ADR-0001
 | [0094](0094-links-shortcuts-share-target.md) | Link zur Einkaufsliste, Verknüpfungen am App-Symbol und «Teilen an Rettich» | angenommen | 2026-11-14 |
 | [0095](0095-essentials-and-extras.md) | Basis zuerst, alles Weitere zum Einschalten | angenommen | 2026-11-14 |
 | [0096](0096-open-food-facts-switch.md) | Open Food Facts als Schalter, für neue Personen aus | angenommen | 2026-11-15 |
+| [0097](0097-delete-pot.md) | Topf «Löschen» für falsche Einträge | angenommen | 2026-11-15 |

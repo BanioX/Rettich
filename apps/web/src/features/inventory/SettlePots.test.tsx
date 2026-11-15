@@ -20,7 +20,7 @@ function renderPots(props: { disabled?: boolean; dragging?: boolean; over?: Drop
 describe('SettlePots', () => {
   afterEach(cleanup);
 
-  it('shows four pots in a region and tells the drop target of each', () => {
+  it('shows five pots in a region and tells the drop target of each', () => {
     renderPots({});
     const region = screen.getByRole('region', { name: 'Auswahl abschliessen' });
     const buttons = within(region).getAllByRole('button');
@@ -29,13 +29,22 @@ describe('SettlePots', () => {
       'Entsorgt',
       'Verarbeiten',
       'Nachkaufen',
+      'Löschen',
     ]);
     expect(buttons.map((button) => button.getAttribute('data-drop-target'))).toEqual([
       'action:eaten',
       'action:wasted',
       'action:process',
       'action:rebuy',
+      'action:delete',
     ]);
+  });
+
+  it('keeps «Löschen» neutral: neither red nor green', () => {
+    renderPots({});
+    const classes = screen.getByRole('button', { name: 'Löschen' }).className;
+    expect(classes).not.toContain('text-today');
+    expect(classes).not.toContain('basil-50');
   });
 
   it('calls the handler of the tapped pot', async () => {

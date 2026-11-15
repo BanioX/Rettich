@@ -36,13 +36,14 @@ test('taps «Verwertet» for two items and takes it back with «Rückgängig»',
   await page.goto('/inventory?location=fridge');
   await page.getByRole('button', { name: 'Auswählen' }).click();
 
-  // Four pots under the tabs; nothing chosen yet, so none can be pressed.
+  // Five pots under the tabs; nothing chosen yet, so none can be pressed.
   const pots = page.getByRole('region', { name: 'Auswahl abschliessen' });
   await expect(pots.getByRole('button')).toHaveText([
     'Verwertet',
     'Entsorgt',
     'Verarbeiten',
     'Nachkaufen',
+    'Löschen',
   ]);
   await expect(pots.getByRole('button', { name: 'Verwertet' })).toBeDisabled();
   for (const button of await pots.getByRole('button').all()) {
@@ -166,4 +167,67 @@ test('asks «Ohne Rettich im Abfall gelandet?» for food due today, and «Ja, ge
 
   await page.getByRole('navigation').getByRole('link', { name: 'Start' }).click();
   await expect(page.getByText(/1 Rettung diesen Monat/)).toBeVisible();
+});
+
+test('«Löschen» removes a wrong entry without an outcome, and «Rückgängig» restores it', async ({
+  page,
+}) => {
+  await addToFridge(page, 'Testbuch');
+  await addToFridge(page, 'Probeartikel');
+  await page.goto('/inventory?location=fridge');
+  await page.getByRole('button', { name: 'Auswählen' }).click();
+  await page.getByText('Testbuch', { exact: true }).click();
+  await page.getByText('Probeartikel', { exact: true }).click();
+  await page
+    .getByRole('region', { name: 'Auswahl abschliessen' })
+    .getByRole('button', { name: 'Löschen' })
+    .click();
+
+  const toast = page.getByRole('status').filter({ hasText: 'gelöscht' });
+  await expect(toast).toContainText('2 Artikel gelöscht.');
+  // No rescue question, and both items left the list.
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Testbuch/ })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Probeartikel/ })).toHaveCount(0);
+
+  await toast.getByRole('button', { name: 'Rückgängig' }).click();
+  await expect(page.getByRole('link', { name: /Testbuch/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Probeartikel/ })).toBeVisible();
+});
+
+test('drags the selection onto «Löschen»', async ({ page }) => {
+  await addToFridge(page, 'Testbuch');
+  await page.goto('/inventory?location=fridge');
+  await page.getByRole('button', { name: 'Auswählen' }).click();
+  await page.getByText('Testbuch', { exact: true }).click();
+  await expect(page.getByText('1 ausgewählt')).toBeVisible();
+
+  const row = page.getByText('Testbuch', { exact: true });
+  const pot = page.getByRole('button', { name: 'Löschen' });
+  // L-24: wait until the rows stand still before the gesture.
+  await expect
+    .poll(async () => {
+      const first = await row.boundingBox();
+      await page.waitForTimeout(100);
+      return JSON.stringify(first) === JSON.stringify(await row.boundingBox());
+    })
+    .toBe(true);
+
+  const from = await row.boundingBox();
+  const to = await pot.boundingBox();
+  expect(from).not.toBeNull();
+  expect(to).not.toBeNull();
+  if (from === null || to === null) return;
+  await page.mouse.move(from.x + 10, from.y + 5);
+  await page.mouse.down();
+  await page.waitForTimeout(400);
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 12 });
+  await expect(pot).toHaveClass(/scale-105/);
+  await page.mouse.up();
+
+  await expect(page.getByRole('status').filter({ hasText: 'gelöscht' })).toContainText(
+    'Testbuch gelöscht.',
+  );
+  await expect(page.getByRole('link', { name: /Testbuch/ })).toHaveCount(0);
+  await expectNoSideScroll(page);
 });

@@ -306,7 +306,7 @@ export function InventoryPage() {
     }
   };
 
-  /** The pots: «Verwertet», «Entsorgt» and «Nachkaufen» record at once, «Verarbeiten» opens its page. */
+  /** The pots: «Verwertet», «Entsorgt», «Nachkaufen» and «Löschen» act at once, «Verarbeiten» opens its page. */
   const settleChosen = async (action: SettleAction) => {
     if (mover.busy || settler.busy || chosen.length === 0) {
       return;

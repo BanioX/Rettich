@@ -1,5 +1,7 @@
 # ADR-0055: Töpfe: Auswahl abschliessen
 
+> Nachtrag: Ein fünfter Topf «Löschen» kam hinzu, siehe [ADR-0097](0097-delete-pot.md).
+
 - **Status:** angenommen
 - **Datum:** 2026-11-12
 - **Entscheid von:** Alban (Idee), Claude (Umsetzung)
