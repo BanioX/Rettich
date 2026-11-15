@@ -150,7 +150,7 @@ describe('InventoryPage', () => {
       expect((verwertet as HTMLButtonElement).disabled).toBe(false);
     });
 
-    it('shows a quiet hint only while nothing is chosen and counts in a status region', async () => {
+    it('shows a quiet hint only while nothing is chosen and counts in a polite live region', async () => {
       renderPage(await seededPots());
       await screen.findByText('Joghurt');
       await userEvent.click(screen.getByRole('button', { name: 'Auswählen' }));
@@ -161,7 +161,7 @@ describe('InventoryPage', () => {
       ).toBe(screen.getByText(hint).id);
       await userEvent.click(screen.getByRole('checkbox', { name: 'Joghurt' }));
       expect(screen.queryByText(hint)).toBeNull();
-      expect(screen.getByText('1 ausgewählt').getAttribute('role')).toBe('status');
+      expect(screen.getByText('1 ausgewählt').getAttribute('aria-live')).toBe('polite');
     });
 
     it('records the whole rest as verwertet, says so and takes it back with Rückgängig', async () => {
