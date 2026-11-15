@@ -150,6 +150,20 @@ describe('InventoryPage', () => {
       expect((verwertet as HTMLButtonElement).disabled).toBe(false);
     });
 
+    it('shows a quiet hint only while nothing is chosen and counts in a polite live region', async () => {
+      renderPage(await seededPots());
+      await screen.findByText('Joghurt');
+      await userEvent.click(screen.getByRole('button', { name: 'Auswählen' }));
+      const hint = 'Tipp Artikel an, dann wähle, was damit passiert.';
+      expect(screen.getByText(hint)).toBeDefined();
+      expect(
+        within(pots()).getByRole('button', { name: 'Verwertet' }).getAttribute('aria-describedby'),
+      ).toBe(screen.getByText(hint).id);
+      await userEvent.click(screen.getByRole('checkbox', { name: 'Joghurt' }));
+      expect(screen.queryByText(hint)).toBeNull();
+      expect(screen.getByText('1 ausgewählt').getAttribute('aria-live')).toBe('polite');
+    });
+
     it('records the whole rest as verwertet, says so and takes it back with Rückgängig', async () => {
       const db = await seededPots();
       renderPage(db);

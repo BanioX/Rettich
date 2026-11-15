@@ -8,10 +8,11 @@ import { ChoiceChips } from '../../ui/ChoiceChips';
 import { onListHint } from './min-stock-hint';
 import { outcomeText, planOutcome, rebuyText } from './settle';
 import { createPortal } from 'react-dom';
+import { useToastTimer } from './use-toast-timer';
 
 /** The toast stays this long, like the swipe toast; a hint needs a moment longer to read. */
-const TOAST_MS = 5000;
-const HINT_TOAST_MS = 9000;
+const TOAST_MS = 8000;
+const HINT_TOAST_MS = 10000;
 
 type Answer = 'yes' | 'no';
 
@@ -24,6 +25,8 @@ interface Asking {
 interface Toast {
   text: string;
   hint?: string;
+  /** Second line after deleting several items: the first names, then «und N weitere». */
+  names?: string;
   /** Event ids of the outcomes just recorded; `null` when there is nothing to undo. */
   undo: Id[] | null;
   /** The undo restores deleted items (`undo` holds item ids) instead of undoing outcomes. */
@@ -54,20 +57,14 @@ export function useSettleSelected(): {
   /** Set at once, before React renders `busy`: a second tap in the same moment does nothing. */
   const running = useRef(false);
 
-  useEffect(() => {
-    if (toast === null) {
-      return undefined;
-    }
-    const timer = window.setTimeout(
-      () => {
-        setToast(null);
-      },
-      toast.hint === undefined ? TOAST_MS : HINT_TOAST_MS,
-    );
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [toast]);
+  const closeToast = useCallback(() => {
+    setToast(null);
+  }, []);
+  const pause = useToastTimer(
+    toast,
+    toast?.hint === undefined ? TOAST_MS : HINT_TOAST_MS,
+    closeToast,
+  );
 
   const ask = useCallback(
     (items: readonly InventoryItemView[]) =>
@@ -200,6 +197,7 @@ export function useSettleSelected(): {
       ].filter((part) => part !== '');
       setToast({
         text: parts.join(' '),
+        ...(done.length > 1 ? { names: t.deletedNames(done.map((item) => item.name)) } : {}),
         undo: done.length === 0 ? null : done.map((item) => item.id),
         ...(done.length === 0 ? {} : { restore: true as const }),
       });
@@ -274,12 +272,16 @@ export function useSettleSelected(): {
         <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] lg:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] lg:left-64 z-20 mx-auto max-w-xl px-4">
           <div
             role="status"
+            {...pause}
             className="pointer-events-auto flex items-center justify-between gap-2 rounded-2xl bg-onyx py-2 pr-2 pl-4 text-white shadow-card empty:hidden"
           >
             {toast === null ? null : (
               <>
                 <div>
                   <p className="font-semibold">{toast.text}</p>
+                  {toast.names === undefined ? null : (
+                    <p className="text-sm text-white/80">{toast.names}</p>
+                  )}
                   {toast.hint === undefined ? null : (
                     <p className="text-sm text-white/80">{toast.hint}</p>
                   )}

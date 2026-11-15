@@ -46,6 +46,7 @@ import { SWIPE_HINT_ID, useSwipeOutcome } from './swipe-outcome';
 
 /** Id of the visually hidden drag hint that selectable rows point to. */
 const DRAG_HINT_ID = 'drag-to-location-hint';
+const POTS_HINT_ID = 'settle-pots-hint';
 const tabId = (location: StorageLocation) => `tab-${location}`;
 const panelId = (location: StorageLocation) => `panel-${location}`;
 
@@ -497,6 +498,7 @@ export function InventoryPage() {
 
       {selection.active ? (
         <SettlePots
+          describedBy={POTS_HINT_ID}
           disabled={chosen.length === 0 || mover.busy || settler.busy}
           dragging={drag.dragging}
           over={drag.over}
@@ -504,6 +506,12 @@ export function InventoryPage() {
             void settleChosen(action);
           }}
         />
+      ) : null}
+      {selection.active ? (
+        // Fixed height, so nothing jumps when the first item is chosen.
+        <p id={POTS_HINT_ID} className="-mt-1 min-h-5 text-sm leading-5 text-ink-muted">
+          {chosen.length === 0 ? t.settle.hint : null}
+        </p>
       ) : null}
 
       <div
@@ -546,9 +554,12 @@ export function InventoryPage() {
                 >
                   {allChosen ? t.select.none : t.select.all}
                 </button>
-                {chosen.length > 0 ? (
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold">{t.select.count(chosen.length)}</p>
+                <div className="flex items-center gap-2">
+                  {/* Always mounted, so screen readers announce the changing count. */}
+                  <p aria-live="polite" className="font-semibold">
+                    {chosen.length > 0 ? t.select.count(chosen.length) : null}
+                  </p>
+                  {chosen.length > 0 ? (
                     <button
                       type="button"
                       disabled={mover.busy || editor.busy}
@@ -559,8 +570,8 @@ export function InventoryPage() {
                     >
                       {t.select.edit}
                     </button>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
             ) : (
               swipe.tip

@@ -38,7 +38,7 @@ export function SelectableRow({
       <span
         aria-hidden="true"
         className={`grid size-6 shrink-0 place-items-center rounded-full border-2 text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 ${
-          selected ? 'border-basil-700 bg-basil-700' : 'border-silver bg-surface'
+          selected ? 'border-basil-700 bg-basil-700' : 'border-ink-muted bg-surface'
         }`}
       >
         {selected ? <Check size={16} strokeWidth={3} /> : null}

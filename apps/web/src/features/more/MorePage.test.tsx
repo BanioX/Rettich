@@ -77,7 +77,7 @@ describe('«Mehr»: Kühlschrank-Check', () => {
     act(() => {
       writeExtras({ ...ESSENTIALS, on: true });
     });
-    expect(screen.getByRole('link', { name: /^Funktionen.*Erweitert/ })).toBeDefined();
+    expect(await screen.findByRole('link', { name: /^Funktionen.*Erweitert/ })).toBeDefined();
   });
 
   it('words today and yesterday', () => {
