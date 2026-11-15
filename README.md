@@ -10,7 +10,7 @@ Bis 7.11.2026 hiess die App «FridgeAI». Das Repo heisst seit 14.11.2026 `Banio
 
 Local-first PWA für Schweizer Haushalte (WGs, Paare, Familien). Rettich zeigt dir, was mit deinen Lebensmitteln passiert: was du verwertest, was du entsorgst und was es kostet ([ADR-0046](docs/adr/0046-awareness-verwertet-entsorgt.md)). Alles läuft offline auf dem Gerät: Quittungen, Barcodes und Nährwerttabellen liest Rettich selbst, ohne Cloud-KI und ohne Konto.
 
-**Product Owner:** Alban Hyseni · **Stand:** Version 0.22.0 ([Releases](https://github.com/BanioX/Rettich/releases), [Änderungen](CHANGELOG.md)), im Pilot ([`docs/pilot.md`](docs/pilot.md)); Teilen im Haushalt folgt · **Lizenz:** proprietär, alle Rechte vorbehalten
+**Product Owner:** Alban Hyseni · **Stand:** Version 0.23.0 ([Releases](https://github.com/BanioX/Rettich/releases), [Änderungen](CHANGELOG.md)), im Pilot ([`docs/pilot.md`](docs/pilot.md)); Teilen im Haushalt folgt · **Lizenz:** proprietär, alle Rechte vorbehalten
 
 ---
 

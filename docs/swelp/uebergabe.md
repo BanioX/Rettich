@@ -1,6 +1,6 @@
 # Übergabe: wo die Arbeit steht
 
-Für die nächste Sitzung (Mensch oder KI). Claude führt diese Datei am Ende jeder längeren Sitzung nach. Sie ersetzt keine Register, sie zeigt nur den Faden. Stand: 14.11.2026. Version 0.22.0 ist die letzte veröffentlichte ([CHANGELOG](../../CHANGELOG.md)).
+Für die nächste Sitzung (Mensch oder KI). Claude führt diese Datei am Ende jeder längeren Sitzung nach. Sie ersetzt keine Register, sie zeigt nur den Faden. Stand: 15.11.2026. Version 0.23.0 ist die letzte veröffentlichte ([CHANGELOG](../../CHANGELOG.md)).
 
 ## Stand
 
@@ -15,7 +15,7 @@ Steht nicht in diesem Repo. Ideen, Reihenfolge und offene Fragen an Alban liegen
 
 ## Offen im Code
 
-Keine offenen Branches: Alles dieser Sitzung ist gemergt, zuletzt die Nachführung der Doku nach 0.22.0. Offene Aufträge zu den Flächen (K7, K12, K13, K14) stehen in [`flaechen.md`](../flaechen.md).
+Keine offenen Branches: Alles dieser Sitzung ist gemergt, zuletzt die Namen «Basis» und «Erweitert» (#346). Offene Aufträge zu den Flächen (K7, K12, K13) stehen in [`flaechen.md`](../flaechen.md).
 
 ## Arbeitsweise, die sich bewährt hat
 
@@ -28,4 +28,6 @@ Keine offenen Branches: Alles dieser Sitzung ist gemergt, zuletzt die Nachführu
 - Eine echte Quittung zuerst privat durch dieselbe Texterkennung wie in der App schicken (Node, `dist/ocr`), nie ins Repo; Tests nur mit erfundenen Artikeln und denselben Lesefehlern (L-36, L-37).
 - Markdown nie durch `prettier --write` schicken: `.md` steht in `.prettierignore`, Prettier richtet sonst ganze Tabellen neu aus und bläht den Diff auf.
 - Layout auf grossen Bildschirmen: eine Breakpoint-Regel pro Baustein (`lg:` Seitenleiste, `md:` Dialog), E2E prüft vier Grössen (`adaptive-layout.spec.ts`, `sheet-dialog.spec.ts`).
+- Jede neue Funktion gehört zur Basis oder in eine Gruppe von «Erweitert» (ADR-0095). Tests sehen alles; wer die Basis prüft, setzt `test.use({ newPerson: true })`, dann ist auch Open Food Facts aus (ADR-0096).
+- Open Food Facts nur über `gatedCatalog` und `gatedSearch` ansprechen, nie direkt: So gilt der Schalter für jeden Weg.
 - Agenten der Rolle `implementer` arbeiten in einem eigenen Worktree; Arbeit in einem vorbereiteten Worktree lehnt der Wächter ab. Ihre Commits danach auf einen Branch mit gutem Namen schieben.

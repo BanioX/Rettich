@@ -1,6 +1,6 @@
 # Pilot: Rettich ausprobieren
 
-Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.22.0. Claude gibt den Pilot frei (CLAUDE.md, Prioritäten).
+Für den ersten Pilot mit Alban und einer weiteren Person. Stand: v0.23.0. Claude gibt den Pilot frei (CLAUDE.md, Prioritäten).
 
 ## Einrichten (5 Minuten pro Person)
 

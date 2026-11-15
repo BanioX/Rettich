@@ -2,6 +2,24 @@
 
 Alle Änderungen an Rettich (bis 7.11.2026 FridgeAI), neueste zuerst. Wird mit `pnpm release` erzeugt (ADR-0017).
 
+## [0.23.0] – 2026-11-15
+
+### Neu
+
+- name the sets Basis and Erweitert, show an own choice ([#346](https://github.com/BanioX/Rettich/pull/346))
+- Open Food Facts becomes a switch, off for new people ([#345](https://github.com/BanioX/Rettich/pull/345))
+- Vorrat, item page, Erfassen and Nachkaufen follow the essentials switch ([#343](https://github.com/BanioX/Rettich/pull/343))
+- Start and «Wissen» follow the essentials switch ([#342](https://github.com/BanioX/Rettich/pull/342))
+- essentials first, extras to switch on under «Mehr › Funktionen» ([#341](https://github.com/BanioX/Rettich/pull/341))
+
+### Behoben
+
+- house brand words never match a receipt line, one word is not enough ([#344](https://github.com/BanioX/Rettich/pull/344))
+
+### Dokumentation
+
+- bring the docs up to 0.22.0 ([#340](https://github.com/BanioX/Rettich/pull/340))
+
 ## [0.22.0] – 2026-11-14
 
 ### Neu
