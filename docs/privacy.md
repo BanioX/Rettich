@@ -1,6 +1,6 @@
 # Datenschutz bei Rettich (Entwurf)
 
-> **Entwurf, keine Rechtsberatung.** Stand: v0.22.0, 14. November 2026. Vor einem öffentlichen Start prüfen Alban und eine Fachperson diesen Text (Plan 12d). Massstab: Schweizer Datenschutzgesetz (DSG), für Nutzer:innen in der EU die DSGVO.
+> **Entwurf, keine Rechtsberatung.** Stand: v0.23.0, 15. November 2026. Vor einem öffentlichen Start prüfen Alban und eine Fachperson diesen Text (Plan 12d). Massstab: Schweizer Datenschutzgesetz (DSG), für Nutzer:innen in der EU die DSGVO.
 
 ## Kurz gesagt
 
