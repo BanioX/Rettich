@@ -28,6 +28,10 @@ export const test = base.extend<{
               JSON.stringify({ on: true, groups: {} }),
             );
           }
+          // Open Food Facts on, as before ADR-0096; every request is answered by the mock below.
+          if (window.localStorage.getItem('fridgeai:open-food-facts') === null) {
+            window.localStorage.setItem('fridgeai:open-food-facts', 'on');
+          }
         });
       }
       await provide(undefined);

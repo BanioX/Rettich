@@ -13,5 +13,7 @@ configure({ asyncUtilTimeout: 5000 });
 beforeEach(() => {
   if (typeof window !== 'undefined') {
     window.localStorage.setItem('fridgeai:extras', JSON.stringify(ALL_EXTRAS));
+    // Open Food Facts on, as for people who already use Rettich (ADR-0096); tests mock it anyway.
+    window.localStorage.setItem('fridgeai:open-food-facts', 'on');
   }
 });

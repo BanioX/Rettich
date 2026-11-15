@@ -1,4 +1,5 @@
 import {
+  chainCatalogs,
   createRecipeCommands,
   createRecipeQueries,
   createShoppingUseCases,
@@ -15,17 +16,20 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { browserClock, browserIds } from '../data/adapters';
 import { ensureLocalHousehold } from '../data/bootstrap';
 import { startWithEssentials } from './extras';
+import { openFoodFactsAllowed, startWithoutOpenFoodFacts } from './open-food-facts-setting';
 import { appContext } from '../data/command';
 import { FridgeDb } from '../data/db';
 import { createInventoryHandlers, type InventoryHandlers } from '../data/handlers';
 import { createHouseholdHandlers, type HouseholdHandlers } from '../data/household-handlers';
 import { cachedCatalog } from '../data/catalog-cache';
 import {
+  gatedCatalog,
+  gatedSearch,
   openFoodFactsCatalog,
   openFoodFactsSearch,
   rateLimitedSearch,
 } from '../data/open-food-facts';
-import { shippedCatalogSearch } from '../data/local-catalog';
+import { shippedCatalog } from '../data/local-catalog';
 import { requestPersistentStorage } from '../data/persistence';
 import { fetchProductImage } from '../data/product-images';
 import { messages } from './messages.de-CH';
@@ -74,20 +78,33 @@ export function AppDataProvider({ children, db }: { children: ReactNode; db?: Fr
         // only the first of two effect runs creates the household.
         if (profile.created) {
           startWithEssentials();
+          startWithoutOpenFoodFacts();
         }
         if (cancelled) {
           return;
         }
+        const shipped = shippedCatalog();
         const context = {
           db: database,
           clock: browserClock,
           ids: browserIds,
           actor: profile.member.id,
-          catalog: cachedCatalog(database, openFoodFactsCatalog(), browserClock, {
-            image: (url) => fetchProductImage(url),
-          }),
-          search: rateLimitedSearch(openFoodFactsSearch()),
-          localSearch: shippedCatalogSearch(),
+          // Open Food Facts only while its switch is on (ADR-0096), the cache answers either way;
+          // then the shipped catalog, on the device and outside the cache.
+          catalog: chainCatalogs([
+            cachedCatalog(
+              database,
+              gatedCatalog(openFoodFactsCatalog(), openFoodFactsAllowed),
+              browserClock,
+              {
+                image: (url) =>
+                  openFoodFactsAllowed() ? fetchProductImage(url) : Promise.resolve(null),
+              },
+            ),
+            shipped.lookup,
+          ]),
+          search: gatedSearch(rateLimitedSearch(openFoodFactsSearch()), openFoodFactsAllowed),
+          localSearch: shipped.search,
         };
         const inventory = createInventoryHandlers(context);
         // Items that once landed in «Sonstiges» move to their category as soon as the

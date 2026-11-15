@@ -4,7 +4,7 @@ Jeder Entscheid mit Folgen steht hier als eigene Datei `NNNN-titel.md` (ADR-0001
 
 **Pflege:** Wer ein ADR anlegt oder dessen Status ändert, führt diese Tabelle im selben PR nach. Ein abgelöstes ADR bleibt als Verlauf stehen, seine Statuszeile nennt das ADR, das es ablöst.
 
-**Stand:** 14.11.2026, 95 Entscheide.
+**Stand:** 15.11.2026, 96 Entscheide.
 
 | Nr. | Titel | Status | Datum |
 | --- | --- | --- | --- |
@@ -103,3 +103,4 @@ Jeder Entscheid mit Folgen steht hier als eigene Datei `NNNN-titel.md` (ADR-0001
 | [0093](0093-sheets-as-dialogs.md) | Sheets als Dialog auf grossen Bildschirmen | angenommen | 2026-11-14 |
 | [0094](0094-links-shortcuts-share-target.md) | Link zur Einkaufsliste, Verknüpfungen am App-Symbol und «Teilen an Rettich» | angenommen | 2026-11-14 |
 | [0095](0095-essentials-and-extras.md) | Grundfunktionen zuerst, alles Weitere zum Einschalten | angenommen | 2026-11-14 |
+| [0096](0096-open-food-facts-switch.md) | Open Food Facts als Schalter, für neue Personen aus | angenommen | 2026-11-15 |

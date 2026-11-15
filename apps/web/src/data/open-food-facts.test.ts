@@ -1,6 +1,12 @@
 import { GtinSchema } from '@fridgeai/core';
 import { describe, expect, it, vi } from 'vitest';
-import { openFoodFactsCatalog, openFoodFactsSearch, rateLimitedSearch } from './open-food-facts';
+import {
+  gatedCatalog,
+  gatedSearch,
+  openFoodFactsCatalog,
+  openFoodFactsSearch,
+  rateLimitedSearch,
+} from './open-food-facts';
 
 const gtin = GtinSchema.parse('7610000000004');
 const json = (body: unknown, status = 200) =>
@@ -88,5 +94,25 @@ describe('rateLimitedSearch', () => {
     await Promise.all(['a', 'b', 'c'].map((query) => search.searchByName(query, 5)));
     expect(sent).toEqual(['0:a', '0:b', '60000:c']);
     expect(waits).toEqual([60_000]);
+  });
+});
+
+describe('gatedCatalog and gatedSearch (ADR-0096)', () => {
+  it('asks nobody while the switch is off and follows it at once', async () => {
+    const gtin = GtinSchema.parse('7610200000019');
+    const lookupByGtin = vi.fn(() =>
+      Promise.resolve({ gtin, name: 'Milch', source: 'off' as const }),
+    );
+    const searchByName = vi.fn(() => Promise.resolve([{ gtin, name: 'Milch' }]));
+    let on = false;
+    const catalog = gatedCatalog({ lookupByGtin }, () => on);
+    const search = gatedSearch({ searchByName }, () => on);
+    expect(await catalog.lookupByGtin(gtin)).toBeNull();
+    expect(await search.searchByName('Milch', 5)).toEqual([]);
+    expect(lookupByGtin).not.toHaveBeenCalled();
+    expect(searchByName).not.toHaveBeenCalled();
+    on = true;
+    expect(await catalog.lookupByGtin(gtin)).toMatchObject({ name: 'Milch' });
+    expect(await search.searchByName('Milch', 5)).toHaveLength(1);
   });
 });

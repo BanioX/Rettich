@@ -8,8 +8,8 @@ Was der Code ausserhalb seiner selbst bewirkt: ans Netz senden, auf dem Gerät s
 
 | Kennung | Host | Was geht raus | Wann | Entscheid |
 | --- | --- | --- | --- | --- |
-| SE-01 | `world.openfoodfacts.org` | Barcode-Nummer; getippte Suchwörter; Produktwörter von Quittungs-Zeilen ohne sicheren Treffer im mitgelieferten Katalog (ohne Preise, Laden, Datum), dazu technisch die IP-Adresse | Scannen oder Eintippen eines unbekannten Barcodes; Namenssuche ab drei Buchstaben; automatisch nach dem Auslesen einer Quittung | ADR-0016, ADR-0025, ADR-0036 |
-| SE-02 | `images.openfoodfacts.org` | Abruf des Packungsbilds (nur die Bildadresse), IP-Adresse | einmal pro Barcode, danach liegt das Bild auf dem Gerät | ADR-0016 |
+| SE-01 | `world.openfoodfacts.org` | Barcode-Nummer; getippte Suchwörter; Produktwörter von Quittungs-Zeilen ohne sicheren Treffer im mitgelieferten Katalog (ohne Preise, Laden, Datum), dazu technisch die IP-Adresse | nur bei eingeschaltetem «Open Food Facts» (neue Personen: aus): Scannen oder Eintippen eines unbekannten Barcodes; Namenssuche ab drei Buchstaben; nach dem Auslesen einer Quittung | ADR-0016, ADR-0025, ADR-0036, ADR-0096 |
+| SE-02 | `images.openfoodfacts.org` | Abruf des Packungsbilds (nur die Bildadresse), IP-Adresse | nur bei eingeschaltetem «Open Food Facts»; einmal pro Barcode, danach liegt das Bild auf dem Gerät | ADR-0016, ADR-0096 |
 | SE-03 | eigene Herkunft (`'self'`, Cloudflare) | Abruf der App-Dateien, IP-Adresse, Browserdaten | Öffnen und Updates; Rettich wertet nichts aus | ADR-0013 |
 
 ## Gerätespeicher
@@ -26,6 +26,7 @@ Was der Code ausserhalb seiner selbst bewirkt: ans Netz senden, auf dem Gerät s
 | SE-28 | localStorage | `fridgeai:app-lock` | Kennung des Zugangsschlüssels der App-Sperre (nicht geheim) und «Sperren nach»; bewusst nicht in der Datenbank und nicht im Export (ADR-0086) | bis zum Ausschalten oder Löschen der Website-Daten |
 | SE-30 | localStorage | `fridgeai:week-review-seen` | Montag der Woche, deren Rückblick «Gesehen» ist; blendet «Deine Woche» bis zur nächsten Woche aus, nicht im Export (ADR-0090) | bis zum Löschen der Website-Daten |
 | SE-31 | localStorage | `fridgeai:feedback-ask` | «Später» (bis wann) und «Nicht mehr fragen» für die Frage nach einer Woche; nicht im Export (ADR-0089) | bis zum Löschen der Website-Daten |
+| SE-36 | localStorage | `fridgeai:open-food-facts` | Ob Rettich Open Food Facts fragen darf: «on» oder «off»; neue Personen «off», nicht im Export (ADR-0096) | bis zum Löschen der Website-Daten |
 | SE-35 | localStorage | `fridgeai:extras` | Welche Funktionen dieses Gerät zeigt: «Erweitert» an oder aus und jede Gruppe; nur Anzeige, nicht im Export (ADR-0095) | bis zum Löschen der Website-Daten |
 
 ## Geräte-Funktionen
