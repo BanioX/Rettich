@@ -30,6 +30,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { useAppData } from '../../app/AppData';
 import { useMoney } from '../../app/money';
 import { messages } from '../../app/messages.de-CH';
+import { openFoodFactsAllowed } from '../../app/open-food-facts-setting';
 import { useExtra } from '../../app/extras';
 import { BackLink } from '../../ui/BackLink';
 import { Button } from '../../ui/Button';
@@ -250,7 +251,9 @@ export function AddItemPage() {
       product: null,
     }));
     if (product === null) {
-      setScanStatus(`${found} ${messages.scanner.unknownProduct}`);
+      // Without Open Food Facts, say where more barcodes come from (ADR-0096).
+      const more = openFoodFactsAllowed() ? '' : ` ${messages.scanner.withoutOpenFoodFacts}`;
+      setScanStatus(`${found} ${messages.scanner.unknownProduct}${more}`);
       return;
     }
     setName((current) => (current.trim() === '' ? product.name : current));

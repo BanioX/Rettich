@@ -21,6 +21,7 @@ import {
   writeLastBackup,
 } from './backup-state';
 import { AppLockSection } from './AppLockSection';
+import { OpenFoodFactsSection } from './OpenFoodFactsSection';
 import { FeedbackList } from './FeedbackList';
 import { exportFileName, saveFile } from './export-files';
 import { PasswordField } from './PasswordField';
@@ -293,6 +294,8 @@ export function HouseholdPage() {
       </section>
 
       <AppLockSection />
+
+      <OpenFoodFactsSection />
 
       <FeedbackList />
 

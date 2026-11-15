@@ -3,6 +3,7 @@ import { Check, ScanBarcode, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useAppData } from '../../app/AppData';
 import { messages } from '../../app/messages.de-CH';
+import { useOpenFoodFacts } from '../../app/open-food-facts-setting';
 import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
 import { BarcodeScanner } from '../scan/BarcodeScanner';
@@ -180,6 +181,7 @@ export type ReceiptMatching = ReturnType<typeof useReceiptMatching>;
 /** Progress, the one-line privacy note and, at the end, the hint to scan the rest. */
 export function MatchPanel({ matching }: { matching: ReceiptMatching }) {
   const found = matching.matches.size;
+  const openFoodFacts = useOpenFoodFacts();
   const status =
     matching.phase === 'running'
       ? t.progress(matching.done, matching.total, found)
@@ -193,7 +195,9 @@ export function MatchPanel({ matching }: { matching: ReceiptMatching }) {
       <p role="status" className="text-sm font-semibold text-basil-800">
         {status}
       </p>
-      {matching.phase === 'idle' ? null : <p className="text-sm text-ink-muted">{t.note}</p>}
+      {matching.phase === 'idle' ? null : (
+        <p className="text-sm text-ink-muted">{t.note(openFoodFacts)}</p>
+      )}
       {matching.phase !== 'running' && matching.asked.size > found ? (
         <Card variant="tip" className="flex gap-3 text-sm">
           <ScanBarcode size={20} className="mt-0.5 shrink-0" aria-hidden="true" />

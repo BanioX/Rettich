@@ -1361,6 +1361,13 @@ export const messages = {
     ownerHint: 'Die Person, die Rettich auf diesem Gerät nutzt, bleibt immer im Haushalt.',
   },
   /** App lock with Face ID, Touch ID or the device code (ADR-0086). */
+  /** «Open Food Facts» in «Deine Daten» (ADR-0096). */
+  openFoodFacts: {
+    title: 'Open Food Facts',
+    switchLabel: 'Produktdaten aus dem Netz',
+    on: 'Bei unbekannten Barcodes, bei der Suche nach Namen und bei Quittungszeilen ohne Treffer auf dem Gerät fragt Rettich die offene Datenbank Open Food Facts. Es gehen nur die Barcode-Nummer oder die Produktwörter hinaus, nie Preise, Laden oder Datum.',
+    off: 'Aus: Nichts geht hinaus. Rettich kennt die Produkte aus dem eingebauten Katalog und aus deinen eigenen Einträgen. Unbekanntes tippst du einmal ein.',
+  },
   appLock: {
     title: 'App-Sperre',
     text: 'Mit der Sperre öffnet sich Rettich erst nach Face ID, Touch ID oder deinem Code. Das schützt dich, wenn jemand dein entsperrtes Handy in der Hand hält.',
@@ -1438,9 +1445,7 @@ export const messages = {
     privacy: 'Datenschutz in Kürze',
     privacyPoints: [
       'Dein Vorrat, deine Liste und deine Statistik bleiben auf diesem Gerät.',
-      'Beim Scannen geht nur die Barcode-Nummer an Open Food Facts, damit Name, Nährwerte und Bild kommen.',
-      'Suchst du nach einem Namen, gehen ab drei Buchstaben nur die getippten Wörter an Open Food Facts.',
-      'Quittungszeilen sucht Rettich zuerst auf dem Gerät. Nur ohne sicheren Treffer geht der Produktname an Open Food Facts, ohne Preise, Laden und Datum.',
+      'Open Food Facts fragt Rettich nur, wenn du es oben einschaltest. Dann geht beim Scannen nur die Barcode-Nummer hinaus, bei der Suche nur die getippten Wörter, bei Quittungszeilen ohne Treffer auf dem Gerät nur der Produktname, nie Preise, Laden oder Datum.',
       'Fotos von Quittungen, Codes und Datumsangaben werden nur auf dem Gerät gelesen, nie gespeichert.',
       'Fotos von Plätzen («Wo ist was?») bleiben auf diesem Gerät und gehören zu deinem Export.',
       'Die Namen der Personen im Haushalt bleiben ebenfalls auf diesem Gerät.',
@@ -1719,12 +1724,16 @@ export const messages = {
   },
   receiptUpload: {
     match: {
-      note: 'Nur die Produktnamen gehen an Open Food Facts, ohne Preise, Laden und Datum.',
+      /** ADR-0096: what goes out depends on the switch «Open Food Facts». */
+      note: (openFoodFacts: boolean) =>
+        openFoodFacts
+          ? 'Nur die Produktnamen gehen an Open Food Facts, ohne Preise, Laden und Datum.'
+          : 'Rettich sucht nur auf dem Gerät: in früheren Quittungen und im eingebauten Katalog.',
       progress: (done: number, total: number, found: number) =>
         `Prüfe ${String(done)} von ${String(total)} … · ${String(found)} gefunden`,
       done: (found: number, total: number) =>
         found === 0
-          ? 'Bei Open Food Facts nichts Passendes gefunden.'
+          ? 'Nichts Passendes gefunden.'
           : `${String(found)} von ${String(total)} gefunden.`,
       unavailable:
         'Open Food Facts ist gerade nicht erreichbar. Du kannst die Quittung trotzdem übernehmen.',
@@ -1745,7 +1754,7 @@ export const messages = {
       scanFor: (name: string) => `Barcode scannen für ${name}`,
       cancelScan: 'Abbrechen',
       scanUnknown:
-        'Diesen Barcode kennt Open Food Facts nicht. Der Artikel kommt mit dem Namen von der Quittung.',
+        'Diesen Barcode kennt Rettich nicht. Der Artikel kommt mit dem Namen von der Quittung.',
       scanInvalid: 'Das war kein Barcode. Versuch es nochmals.',
     },
     intro:
@@ -1851,6 +1860,9 @@ export const messages = {
     product: (name: string, details: string) => `Gefunden: ${name}${details}.`,
     unknownProduct:
       'Produkt noch unbekannt: Gib den Namen ein. Beim nächsten Scan kennt Rettich es.',
+    /** ADR-0096: said after an unknown barcode while Open Food Facts is off. */
+    withoutOpenFoodFacts:
+      'Mit «Open Food Facts» unter «Mehr › Deine Daten» kennt Rettich mehr Barcodes.',
     attribution: 'Daten: Open Food Facts (ODbL)',
     foundWithDate: (code: string, date: string) => `Barcode ${code} erkannt, haltbar bis ${date}.`,
   },

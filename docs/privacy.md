@@ -5,7 +5,7 @@
 ## Kurz gesagt
 
 - Dein Vorrat, deine Einkaufsliste und deine Statistik bleiben **auf deinem Gerät**. Es gibt kein Konto und keinen Rettich-Server mit deinen Daten.
-- Beim Scannen geht **nur die Barcode-Nummer** an Open Food Facts, damit Name, Nährwerte und Packungsbild kommen. Suchst du ein Produkt nach Namen, gehen ab drei Buchstaben **nur die getippten Wörter** dorthin, sobald du kurz mit Tippen innehältst. Liest Rettich eine Quittung, sucht es jede Zeile zuerst bei früheren Quittungen und im mitgelieferten Katalog, auf dem Gerät. Nur Zeilen ohne sicheren Treffer gehen als **Produktname** an Open Food Facts, ohne Preise, Laden und Datum.
+- **Open Food Facts fragt Rettich nur, wenn du es einschaltest** («Mehr» › «Deine Daten»; neue Personen starten ohne, ADR-0096). Dann geht beim Scannen **nur die Barcode-Nummer** an Open Food Facts, damit Name, Nährwerte und Packungsbild kommen. Suchst du ein Produkt nach Namen, gehen ab drei Buchstaben **nur die getippten Wörter** dorthin, sobald du kurz mit Tippen innehältst. Liest Rettich eine Quittung, sucht es jede Zeile zuerst bei früheren Quittungen und im mitgelieferten Katalog, auf dem Gerät. Nur Zeilen ohne sicheren Treffer gehen als **Produktname** an Open Food Facts, ohne Preise, Laden und Datum.
 - Fotos von Codes, Quittungen, Etiketten, Ablaufdaten und Nährwerttabellen (auch Screenshots) sowie Quittungs-PDFs werden auf dem Gerät gelesen und **nie gespeichert**. Nur ein Foto, das du bewusst für einen Platz aufnimmst («Wo ist was?»), bleibt verkleinert auf dem Gerät.
 - **Kein Tracking, keine Werbung, keine Cookies.**
 - Du kannst jederzeit **alles exportieren** (JSON) und **alles löschen** («Mehr» › «Deine Daten»).
@@ -34,7 +34,7 @@ Alles liegt im Speicher deines Browsers auf diesem Gerät (IndexedDB). Ohne dein
 | Verlauf der Änderungen (Ereignisse) | Rückgängig, Export, später der Abgleich zwischen Geräten |
 
 Zusätzlich merkt sich der Browser einige Kleinigkeiten ohne Personenbezug, nicht im Export (vollständige Liste: [`nebenwirkungen.md`](./swelp/nebenwirkungen.md)):
-- im `localStorage`: das Datum deines letzten Kühlschrank-Checks und deiner letzten Sicherung, die gewählte Ansicht im Vorrat, welche Funktionen du eingeschaltet hast, ob du den Wisch-Tipp, den Wochenrückblick und die Frage nach einer Woche schon gesehen hast;
+- im `localStorage`: das Datum deines letzten Kühlschrank-Checks und deiner letzten Sicherung, die gewählte Ansicht im Vorrat, welche Funktionen du eingeschaltet hast, ob Open Food Facts an ist, ob du den Wisch-Tipp, den Wochenrückblick und die Frage nach einer Woche schon gesehen hast;
 - für die freiwillige App-Sperre die Kennung des Zugangsschlüssels und «Sperren nach». Face ID, Touch ID oder den Code prüft das Gerät selbst; Rettich sieht keine biometrischen Daten (ADR-0086);
 - ob die App nach einem Update gerade neu geladen hat (`sessionStorage`, nur bis zum Schliessen des Tabs).
 
@@ -47,6 +47,8 @@ Zusätzlich merkt sich der Browser einige Kleinigkeiten ohne Personenbezug, nich
 | **Open Food Facts, Quittungs-Abgleich** | Nur für Zeilen, die Rettich weder aus deinen früheren Quittungen noch im mitgelieferten Katalog sicher kennt: die Produktwörter ohne Packungsgrösse (z. B. «Naturaplan Bio Coconutwater»), einzeln nacheinander, dazu technisch deine IP-Adresse. Nie Preise, Mengen, Laden, Datum oder Uhrzeit | Automatisch nach dem Auslesen einer Quittung (Albans Entscheid vom 7.11.2026, ADR-0036; zuerst der Katalog seit ADR-0045). Scannst du bei einer Zeile den Barcode, geht nur die Barcode-Nummer raus |
 | **Open Food Facts, Bildserver** | Abruf des Packungsbilds, dazu technisch deine IP-Adresse | Einmal pro Barcode, danach liegt das Bild auf dem Gerät |
 | **Cloudflare** (Hoster der App) | Abruf der App-Dateien, dazu technisch deine IP-Adresse und Browserdaten | Beim Öffnen und bei Updates; Rettich wertet das nicht aus |
+
+Alle Zeilen zu Open Food Facts gelten nur, solange der Schalter «Open Food Facts» unter «Deine Daten» an ist. Ist er aus, geht für Produktdaten nichts hinaus.
 
 Andere Verbindungen erlaubt die App nicht: Eine Content-Security-Policy lässt nur die App selbst und die beiden Open-Food-Facts-Adressen zu.
 

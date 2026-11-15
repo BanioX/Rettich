@@ -114,3 +114,20 @@ function wait(ms: number) {
     setTimeout(resolve, Math.max(0, ms));
   });
 }
+
+/**
+ * The switch «Open Food Facts» (ADR-0096): while it is off, a lookup knows nothing and a search
+ * finds nothing, without a single request. Asked on every call, so a switch counts at once.
+ */
+export function gatedCatalog(catalog: ProductCatalog, allowed: () => boolean): ProductCatalog {
+  return {
+    lookupByGtin: (gtin) => (allowed() ? catalog.lookupByGtin(gtin) : Promise.resolve(null)),
+  };
+}
+
+export function gatedSearch(search: ProductSearch, allowed: () => boolean): ProductSearch {
+  return {
+    searchByName: (query, limit) =>
+      allowed() ? search.searchByName(query, limit) : Promise.resolve([]),
+  };
+}

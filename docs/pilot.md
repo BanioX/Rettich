@@ -49,11 +49,11 @@ Genauso geht es beim Handywechsel und später beim Umzug auf eine eigene Adresse
 - **Kein Teilen zwischen Handys:** Jede Person hat ihren eigenen Vorrat. Ein gemeinsamer Haushalt kommt mit Konten (Plan, Schritt 7).
 - **Quittungen:** PDFs aus der Coop- und Migros-App werden am genauesten gelesen. Fotos und Screenshots können Ziffern verwechseln: Die Summenprüfung zeigt das, ein Tipp auf den Preis korrigiert ihn. Screenshots in voller Grösse hochladen, nicht über einen Chat verkleinert. Erkennt Rettich den Laden nicht, fragt es «Wo eingekauft?».
 - **Scan im Browser:** Ist es unscharf, das Handy etwas weiter weg halten oder «Code aus Foto lesen» nutzen.
-- **Unbekannte Produkte:** Nicht jeder Barcode ist bei Open Food Facts. Einmal von Hand erfassen, beim nächsten Scan kennt Rettich das Produkt.
+- **Unbekannte Produkte:** Rettich kennt Barcodes aus dem eingebauten Katalog. Mehr kennt es mit «Open Food Facts» unter «Mehr › Deine Daten» (für neue Personen aus). Sonst einmal von Hand erfassen, beim nächsten Scan kennt Rettich das Produkt.
 - **Handywechsel und mehrere Geräte:** iPhone, iPad und Computer haben je eigene Daten. Export und Import wie oben übertragen sie. Ein laufender Abgleich zwischen Geräten kommt mit den Konten.
 - **Keine Push-Mitteilungen:** Die App zeigt das Dringende beim Öffnen. Für einen einzelnen Artikel trägt «Im Kalender erinnern» auf der Artikelseite einen Termin in deinen Kalender ein.
 - **Siri:** Ein Kurzbefehl, der einen Rettich-Link öffnet, landet auf dem iPhone in Safari und damit nicht in den Daten der App auf dem Home-Bildschirm (ADR-0094).
 
 ## Daten und Datenschutz
 
-Alles bleibt auf dem Gerät. Quittungen werden auf dem Handy gelesen und nie gespeichert, nur Name, Menge und Preis jeder Zeile. Beim Scannen geht nur die Barcode-Nummer an Open Food Facts (Name, Nährwerte, Bild), bei der Suche nur die getippten Wörter. Quittungszeilen sucht Rettich zuerst im mitgelieferten Katalog auf dem Gerät; nur ohne sicheren Treffer geht der Produktname an Open Food Facts, ohne Preise, Laden und Datum. Es gibt kein Tracking, keine Werbung und kein Konto. Mit «Alles löschen» unter «Mehr» → «Deine Daten» ist alles weg (ADR-0020).
+Alles bleibt auf dem Gerät. Quittungen werden auf dem Handy gelesen und nie gespeichert, nur Name, Menge und Preis jeder Zeile. Open Food Facts fragt Rettich nur, wenn du es unter «Mehr › Deine Daten» einschaltest. Dann geht beim Scannen nur die Barcode-Nummer hinaus (Name, Nährwerte, Bild), bei der Suche nur die getippten Wörter, und für Quittungszeilen ohne sicheren Treffer im mitgelieferten Katalog nur der Produktname, ohne Preise, Laden und Datum. Es gibt kein Tracking, keine Werbung und kein Konto. Mit «Alles löschen» unter «Mehr» → «Deine Daten» ist alles weg (ADR-0020).
