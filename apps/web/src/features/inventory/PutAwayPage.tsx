@@ -4,6 +4,7 @@ import { formatSwissDate, type ExpiryFromText, type InventoryItemView } from '@f
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useAppData } from '../../app/AppData';
+import { useExtra } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { Button } from '../../ui/Button';
 import { GROUPED_ROW_LINK, GroupedList, GroupedListItem } from '../../ui/GroupedList';
@@ -25,6 +26,8 @@ export function PutAwayPage() {
   const [status, setStatus] = useState('');
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  // Spot headings belong to «Plätze» (ADR-0095).
+  const spotsShown = useExtra('spots');
   const ids = params.getAll('item');
 
   const items = useLiveQuery(
@@ -77,7 +80,7 @@ export function PutAwayPage() {
       {sections.map(({ location, groups }) => {
         const { icon: Icon, classes } = locationStyle[location];
         // Without any saved spot here, a lone «Ohne festen Platz» heading would only be noise.
-        const showSpots = groups.some((group) => group.spot !== null);
+        const showSpots = spotsShown && groups.some((group) => group.spot !== null);
         return (
           <section key={location} aria-labelledby={`put-away-${location}`} className="space-y-3">
             <h2 id={`put-away-${location}`} className="flex items-center gap-2 text-lg font-bold">

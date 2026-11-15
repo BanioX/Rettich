@@ -132,3 +132,15 @@ export function useExtras(): ExtrasState {
 export function useExtra(group: ExtraGroup): boolean {
   return isShown(useExtras(), group);
 }
+
+/** Every group at once, shown or not: for pages with several extra sections. */
+export function shownGroups(state: ExtrasState): Record<ExtraGroup, boolean> {
+  return Object.fromEntries(EXTRA_GROUPS.map((group) => [group, isShown(state, group)])) as Record<
+    ExtraGroup,
+    boolean
+  >;
+}
+
+export function useShownGroups(): Record<ExtraGroup, boolean> {
+  return shownGroups(useExtras());
+}

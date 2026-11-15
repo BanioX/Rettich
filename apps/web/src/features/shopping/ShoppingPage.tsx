@@ -11,6 +11,7 @@ import { useEffect, useId, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { useAppData } from '../../app/AppData';
 import { messages } from '../../app/messages.de-CH';
+import { useExtra } from '../../app/extras';
 import { BackLink } from '../../ui/BackLink';
 import { Button } from '../../ui/Button';
 import { Card } from '../../ui/Card';
@@ -148,7 +149,9 @@ export function ShoppingPage() {
       return null;
     });
 
-  const tips = shoppingTips({ entries: entries ?? [], habits });
+  // «Entsorgst du oft» and «Bald wieder nötig» belong to «Hinweise» (ADR-0095).
+  const hints = useExtra('hints');
+  const tips = shoppingTips({ entries: entries ?? [], habits: hints ? habits : [] });
   const shareList = async () => {
     const text = shoppingListText(t.shareTitle, entries ?? []);
     const outcome = await shareText(text);
@@ -282,7 +285,7 @@ export function ShoppingPage() {
         </p>
       </form>
 
-      <RestockSuggestions />
+      {hints ? <RestockSuggestions /> : null}
 
       {entries === undefined ? (
         <p className="sr-only">{messages.loading}</p>

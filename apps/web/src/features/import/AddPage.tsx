@@ -3,6 +3,7 @@ import { Camera, ListPlus, PencilLine, Receipt, ScanBarcode, Soup } from 'lucide
 import { useNavigate } from 'react-router';
 import { useAppData } from '../../app/AppData';
 import { messages } from '../../app/messages.de-CH';
+import { useExtra } from '../../app/extras';
 import { CameraInput } from '../../ui/CameraInput';
 import { Card } from '../../ui/Card';
 import { MenuList } from '../../ui/MenuList';
@@ -19,6 +20,7 @@ const t = messages.addHub;
 export function AddPage() {
   const { householdId, inventory } = useAppData();
   const navigate = useNavigate();
+  const cooking = useExtra('cooking');
   const empty = useLiveQuery(
     async () => (await inventory['inventory.list']({ householdId })).items.length === 0,
     [householdId, inventory],
@@ -56,12 +58,17 @@ export function AddPage() {
           },
           { to: '/inventory/new', icon: PencilLine, title: t.manualTitle, detail: t.manual },
           { to: '/add/batch', icon: ListPlus, title: t.batchTitle, detail: t.batch },
-          {
-            to: '/add/process?kind=leftover',
-            icon: Soup,
-            title: t.leftoversTitle,
-            detail: t.leftovers,
-          },
+          // Leftovers belong to «Kochen» (ADR-0095).
+          ...(cooking
+            ? [
+                {
+                  to: '/add/process?kind=leftover',
+                  icon: Soup,
+                  title: t.leftoversTitle,
+                  detail: t.leftovers,
+                },
+              ]
+            : []),
         ]}
       />
 

@@ -61,6 +61,48 @@ test.describe('a new person under «Wissen»', () => {
   });
 });
 
+test.describe('a new person in Vorrat, on an item and under Erfassen', () => {
+  test.use({ newPerson: true });
+
+  test('sees the essentials, and the extras once «Erweitert» is on', async ({ page }) => {
+    await page.goto('/inventory/new');
+    await page.getByLabel('Was ist es?').fill('Joghurt');
+    await page.getByRole('button', { name: 'Speichern', exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Vorrat' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Auswählen' })).toHaveCount(0);
+    await expect(page.getByRole('radio', { name: /Nach Art/ })).toHaveCount(0);
+
+    await page
+      .getByRole('link', { name: /Joghurt/ })
+      .first()
+      .click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Joghurt' })).toBeVisible();
+    for (const extra of [/Platz festhalten/, /^Verarbeiten$/, /Im Kalender erinnern/]) {
+      await expect(
+        page.getByRole('button', { name: extra }).or(page.getByRole('link', { name: extra })),
+      ).toHaveCount(0);
+    }
+    await expect(page.getByText('Immer da haben')).toHaveCount(0);
+
+    await page.goto('/add');
+    await expect(page.getByRole('link', { name: /Reste erfassen/ })).toHaveCount(0);
+
+    await page.goto('/more/extras');
+    await page.getByRole('switch', { name: 'Erweitert' }).click();
+    await page.goto('/add');
+    await expect(page.getByRole('link', { name: /Reste erfassen/ })).toBeVisible();
+    await page.goto('/inventory');
+    await expect(page.getByRole('button', { name: 'Auswählen' })).toBeVisible();
+    await page
+      .getByRole('link', { name: /Joghurt/ })
+      .first()
+      .click();
+    await expect(page.getByRole('button', { name: /Platz festhalten/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /^Verarbeiten$/ })).toBeVisible();
+    await expect(page.getByText('Immer da haben')).toBeVisible();
+  });
+});
+
 test('a person who already uses Rettich keeps every function', async ({ page }) => {
   await page.goto('/more');
   for (const shown of [/^Klimabilanz/, /^Wo ist was\?/, /^Personen/, /^Funktionen.*Erweitert/]) {

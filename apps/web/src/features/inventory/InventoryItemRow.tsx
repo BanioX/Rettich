@@ -1,5 +1,6 @@
 import { itemBadges, type InventoryItemView } from '@fridgeai/core';
 import { useAppData } from '../../app/AppData';
+import { isShown, useExtras } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { ItemBadges } from '../../ui/ItemBadges';
 import { ItemRow } from '../../ui/ItemRow';
@@ -26,15 +27,21 @@ export function InventoryItemRow({
   const image = useProductImage(item.gtin);
   const { today } = useAppData();
   const badges = itemBadges(item, today);
+  // Owner marks and spot names are extras (ADR-0095): «Haushalt» and «Plätze».
+  const extras = useExtras();
   return (
     <ItemRow
       categoryId={item.categoryId}
       image={image}
       name={item.name}
-      meta={itemMeta(item)}
+      meta={itemMeta(item, isShown(extras, 'spots'))}
       status={status}
       badges={badges.length === 0 ? undefined : <ItemBadges badges={badges} max={2} />}
-      owner={item.owner === 'shared' ? undefined : <OwnerMark ownerId={item.owner} />}
+      owner={
+        item.owner === 'shared' || !isShown(extras, 'household') ? undefined : (
+          <OwnerMark ownerId={item.owner} />
+        )
+      }
       attention={attention ? messages.attention.marker : undefined}
       chevron={chevron}
       sliced={sliced}

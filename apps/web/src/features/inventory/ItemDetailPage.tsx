@@ -35,6 +35,7 @@ import {
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useAppData } from '../../app/AppData';
+import { useShownGroups } from '../../app/extras';
 import { messages } from '../../app/messages.de-CH';
 import { PriceMemoryNote } from '../receipts/PriceMemoryNote';
 import { Button } from '../../ui/Button';
@@ -106,6 +107,8 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
   const navigate = useNavigate();
   const item = useInventoryItem(itemId);
   const image = useProductImage(item?.gtin);
+  // Which extra sections this device shows (ADR-0095).
+  const extras = useShownGroups();
   const [outcome, setOutcome] = useState<Outcome>('eaten');
   const [portion, setPortion] = useState<string | null>(null);
   const [otherText, setOtherText] = useState('');
@@ -605,34 +608,36 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
         )}
       </div>
 
-      <button
-        type="button"
-        onClick={() => {
-          setChoosingSpot(true);
-        }}
-        className="flex min-h-14 w-full items-center gap-3 rounded-2xl bg-surface p-3 text-left shadow-card hover:bg-surface-muted"
-      >
-        {item.spot === null ? (
-          <>
-            <span
-              aria-hidden="true"
-              className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-basil-700"
-            >
-              <MapPin size={20} />
-            </span>
-            <span className="min-w-0 flex-1 font-semibold text-basil-700">{spotText.hold}</span>
-          </>
-        ) : (
-          <>
-            <SpotThumb photo={spots?.find((spot) => spot.id === item.spot?.id)?.photo} />
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm text-ink-muted">{spotText.row}</span>
-              <span className="block truncate font-semibold">{item.spot.name}</span>
-            </span>
-          </>
-        )}
-        <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink-muted/60" />
-      </button>
+      {extras.spots ? (
+        <button
+          type="button"
+          onClick={() => {
+            setChoosingSpot(true);
+          }}
+          className="flex min-h-14 w-full items-center gap-3 rounded-2xl bg-surface p-3 text-left shadow-card hover:bg-surface-muted"
+        >
+          {item.spot === null ? (
+            <>
+              <span
+                aria-hidden="true"
+                className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-basil-700"
+              >
+                <MapPin size={20} />
+              </span>
+              <span className="min-w-0 flex-1 font-semibold text-basil-700">{spotText.hold}</span>
+            </>
+          ) : (
+            <>
+              <SpotThumb photo={spots?.find((spot) => spot.id === item.spot?.id)?.photo} />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm text-ink-muted">{spotText.row}</span>
+                <span className="block truncate font-semibold">{item.spot.name}</span>
+              </span>
+            </>
+          )}
+          <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink-muted/60" />
+        </button>
+      ) : null}
 
       <Card>
         <div className="flex items-start justify-between gap-3">
@@ -683,7 +688,7 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
         )}
       </Card>
 
-      <ItemOwner item={item} />
+      {extras.household ? <ItemOwner item={item} /> : null}
 
       {shouldSuggestFreezing(item, today) ? (
         // Text above the button: side by side the sentence broke into four short lines at 390 px.
@@ -703,7 +708,7 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
 
       <OtherPacks item={item} />
 
-      <ProductFacts item={item} />
+      {extras.nutrition ? <ProductFacts item={item} /> : null}
 
       <section aria-labelledby="more-title" className="space-y-3">
         <h2 id="more-title" className="font-display text-xl font-semibold">
@@ -717,24 +722,28 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
           <Pencil size={20} aria-hidden="true" />
           {messages.editItem.open}
         </Link>
-        <Link
-          to={`/add/process?item=${item.id}`}
-          className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-5 font-semibold text-ink transition-colors hover:bg-surface-muted"
-        >
-          <ChefHat size={20} aria-hidden="true" />
-          {t.process}
-        </Link>
-        <ChoiceChips
-          legend={t.kind.legend}
-          segmented
-          options={kindOptions}
-          value={ready ? 'ready' : 'cook'}
-          onChange={(value) => {
-            void chooseKind(value);
-          }}
-        />
-        <p className="text-sm text-ink-muted">{t.kind.hint}</p>
-        <MinStockRow productId={item.productId} minStock={item.minStock} />
+        {extras.cooking ? (
+          <>
+            <Link
+              to={`/add/process?item=${item.id}`}
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-5 font-semibold text-ink transition-colors hover:bg-surface-muted"
+            >
+              <ChefHat size={20} aria-hidden="true" />
+              {t.process}
+            </Link>
+            <ChoiceChips
+              legend={t.kind.legend}
+              segmented
+              options={kindOptions}
+              value={ready ? 'ready' : 'cook'}
+              onChange={(value) => {
+                void chooseKind(value);
+              }}
+            />
+            <p className="text-sm text-ink-muted">{t.kind.hint}</p>
+          </>
+        ) : null}
+        {extras.hints ? <MinStockRow productId={item.productId} minStock={item.minStock} /> : null}
         {item.openedOn === undefined ? (
           <Button
             variant="secondary"
@@ -761,7 +770,7 @@ function ItemDetail({ itemId }: { itemId: string | undefined }) {
             {item.location === 'freezer' ? t.thaw : t.freeze}
           </Button>
         ) : null}
-        <CalendarReminder item={item} today={today} disabled={busy} />
+        {extras.routines ? <CalendarReminder item={item} today={today} disabled={busy} /> : null}
         <Button
           variant="ghost"
           icon={Trash2}

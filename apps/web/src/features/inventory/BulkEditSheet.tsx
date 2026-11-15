@@ -7,6 +7,7 @@ import type {
 } from '@fridgeai/core';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { messages } from '../../app/messages.de-CH';
+import { useShownGroups } from '../../app/extras';
 import { Button } from '../../ui/Button';
 import { ChoiceChips } from '../../ui/ChoiceChips';
 import { DateField } from '../../ui/DateField';
@@ -47,10 +48,12 @@ export function BulkEditSheet({
   const [owner, setOwner] = useState<Owner | null>(null);
   const [spot, setSpot] = useState<string | null>(null);
   const spots = useSpots();
+  // «Gehört» and spots are extras (ADR-0095): «Haushalt» and «Plätze».
+  const extras = useShownGroups();
   // A spot belongs to one location, so the field only makes sense when all items lie in one.
   const spotLocation = sharedLocation(items);
   const spotsHere =
-    spotLocation === null || spots === undefined
+    !extras.spots || spotLocation === null || spots === undefined
       ? null
       : spots.filter((entry) => entry.location === spotLocation);
   const dialog = useRef<HTMLDivElement>(null);
@@ -131,7 +134,7 @@ export function BulkEditSheet({
           location={location}
         />
 
-        {members.length >= 2 ? (
+        {extras.household && members.length >= 2 ? (
           <OwnerChoice members={members} value={owner} onChange={setOwner} />
         ) : null}
 
