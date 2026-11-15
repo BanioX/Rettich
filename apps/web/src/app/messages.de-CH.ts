@@ -367,6 +367,13 @@ export const messages = {
       /** A wrong entry removed from the list: «Testbuch gelöscht.» / «3 Artikel gelöscht.» */
       deletedOne: (name: string) => `${name} gelöscht.`,
       deletedMany: (n: number) => `${String(n)} Artikel gelöscht.`,
+      /** Second line of the toast after deleting several: «Milch, Butter, Käse und 2 weitere» */
+      deletedNames: (names: readonly string[]) =>
+        names.length <= 3
+          ? names.join(', ')
+          : `${names.slice(0, 3).join(', ')} und ${String(names.length - 3)} weitere`,
+      /** Quiet line above the pots while nothing is chosen. */
+      hint: 'Tipp Artikel an, dann wähle, was damit passiert.',
       /** «Joghurt verwertet.» / «3 Artikel verwertet.» */
       doneOne: (name: string, outcome: 'eaten' | 'wasted') =>
         `${name} ${outcome === 'eaten' ? 'verwertet' : 'entsorgt'}.`,

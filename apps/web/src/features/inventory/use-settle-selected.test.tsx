@@ -134,6 +134,12 @@ describe('the «Löschen» pot', () => {
     return { calls, done };
   }
 
+  it('names up to three deleted items on a second line, then «und N weitere»', async () => {
+    await setup(['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon']);
+    expect(await screen.findByText('5 Artikel gelöscht.')).toBeDefined();
+    expect(screen.getByText(/und 2 weitere$/)).toBeDefined();
+  });
+
   it('deletes one item without an outcome and names it in the toast', async () => {
     const { calls } = await setup(['Testbuch']);
     expect(await screen.findByText('Testbuch gelöscht.')).toBeDefined();

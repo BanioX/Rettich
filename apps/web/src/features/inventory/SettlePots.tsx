@@ -29,14 +29,17 @@ const pots: Record<SettleAction, { icon: LucideIcon; classes: string }> = {
  * drop a dragged parcel on it. Real buttons, so the drag stays a shortcut (WCAG 2.5.7). While a
  * parcel is dragged they get the dashed «drop here» look of the tabs; the one under the finger
  * lifts and gets a solid outline. Five pots in two rows (3 + 2): at 390 px one row would leave
- * about 67 px per pot, too narrow for «Verarbeiten» at 12 px; with three per row each gets about 114 px.
+ * about 67 px per pot, too narrow for «Verarbeiten» at 13 px; with three per row each gets about 114 px.
  */
 export function SettlePots({
+  describedBy,
   disabled,
   dragging,
   over,
   onPick,
 }: {
+  /** Id of the quiet hint line above or below the pots. */
+  describedBy?: string;
   /** Nothing is chosen, or something is being saved. */
   disabled: boolean;
   dragging: boolean;
@@ -45,7 +48,7 @@ export function SettlePots({
 }) {
   const t = messages.inventory.settle;
   return (
-    <section aria-label={t.label} className="grid grid-cols-6 gap-1.5">
+    <section aria-label={t.label} className="grid grid-cols-6 gap-2">
       {SETTLE_ACTIONS.map((action, index) => {
         const { icon: Icon, classes } = pots[action];
         const target: DropTarget = { kind: 'action', action };
@@ -55,11 +58,12 @@ export function SettlePots({
             key={action}
             type="button"
             disabled={disabled}
+            aria-describedby={describedBy}
             onClick={() => {
               onPick(action);
             }}
             data-drop-target={dropKey(target)}
-            className={`${index < 3 ? 'col-span-2' : 'col-span-3'} flex min-h-14 min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-center text-xs leading-tight font-semibold transition-[opacity,transform] ${classes} ${
+            className={`${index < 3 ? 'col-span-2' : 'col-span-3'} flex min-h-14 min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 text-center text-[0.8125rem] leading-tight font-semibold transition-[opacity,transform] ${classes} ${
               disabled && !dragging ? 'opacity-50' : ''
             } ${
               lifted

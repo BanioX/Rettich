@@ -6,19 +6,20 @@ import {
   type LocalDate,
 } from '@fridgeai/core';
 import { Undo2 } from 'lucide-react';
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { useAppData } from '../../app/AppData';
 import { messages } from '../../app/messages.de-CH';
 import { describeDate } from '../../ui/date-text';
 import { formatQuantity } from '../../ui/quantity-text';
 import type { SwipeSide } from '../../ui/SwipeAction';
 import { swipePortion } from './swipe-portion';
+import { useToastTimer } from './use-toast-timer';
 import { RescueMoment, type Moment } from '../today/RescueMoment';
 
-/** The toast stays this long; a new swipe replaces it earlier. */
-const TOAST_MS = 5000;
-/** A toast with a hint stays longer. */
-const HINT_TOAST_MS = 9000;
+/** The toast stays this long, like the pots' toast; a new swipe replaces it earlier. */
+const TOAST_MS = 8000;
+/** A toast with a hint stays longer, as at the pots (use-settle-selected.tsx). */
+const HINT_TOAST_MS = 10000;
 const SEEN_KEY = 'fridgeai:swipe-tip-seen';
 
 /** Id of the visually hidden hint that rows point to with `aria-describedby`. */
@@ -94,21 +95,15 @@ export function useSwipeOutcome({
   const [seen] = useState(readSeen);
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    if (toast === null) {
-      return undefined;
-    }
-    const timer = window.setTimeout(
-      () => {
-        setToast(null);
-      },
-      // The hint needs a moment longer to read.
-      toast.hint === undefined ? TOAST_MS : HINT_TOAST_MS,
-    );
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [toast]);
+  const closeToast = useCallback(() => {
+    setToast(null);
+  }, []);
+  // The hint needs a moment longer to read.
+  const pause = useToastTimer(
+    toast,
+    toast?.hint === undefined ? TOAST_MS : HINT_TOAST_MS,
+    closeToast,
+  );
 
   const record = useCallback(
     (item: InventoryItemView, outcome: SwipeOutcome, rescue = false) => {
@@ -294,6 +289,7 @@ export function useSwipeOutcome({
         <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] lg:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] lg:left-64 z-20 mx-auto max-w-xl px-4">
           <div
             role="status"
+            {...pause}
             className="pointer-events-auto flex items-center justify-between gap-2 rounded-2xl bg-onyx py-2 pr-2 pl-4 text-white shadow-card empty:hidden"
           >
             {toast === null ? null : (
