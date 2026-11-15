@@ -34,6 +34,7 @@ import type { DropTarget, SettleAction } from './drop-target';
 import { useMembers } from '../people/use-members';
 import { BulkEditSheet } from './BulkEditSheet';
 import { MoveTargets } from './MoveTargets';
+import { onListHint } from './min-stock-hint';
 import { SettlePots } from './SettlePots';
 import { useDragToLocation } from './use-drag-to-location';
 import type { BulkChanges } from './bulk-edit';
@@ -182,6 +183,9 @@ function ClosedNotice() {
         </p>
         {closed?.kind === 'outcome' && closed.addedToList === true && note === null ? (
           <p className="text-sm">{messages.minStock.onList}</p>
+        ) : null}
+        {closed?.kind === 'processed' && note === null && closed.addedToListCount !== undefined ? (
+          <p className="text-sm">{onListHint(closed.addedToListCount)}</p>
         ) : null}
         {closed?.kind === 'outcome' && closed.rescuedRappen !== undefined && note === null ? (
           <>

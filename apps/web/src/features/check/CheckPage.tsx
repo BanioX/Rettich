@@ -19,6 +19,7 @@ import { expiryBadge } from '../../ui/expiry-badge';
 import { OwnerMark } from '../people/OwnerMark';
 import { useMembers } from '../people/use-members';
 import { itemMeta } from '../inventory/item-meta';
+import { onListHint } from '../inventory/min-stock-hint';
 import { useProductImage } from '../inventory/use-product-image';
 import { SpotThumb } from '../spots/SpotThumb';
 import { useSpots } from '../spots/use-spots';
@@ -43,6 +44,8 @@ export function CheckPage() {
   // A snapshot: answering changes the inventory, the check still walks through it exactly once.
   const [queue, setQueue] = useState<InventoryItemView[] | null>(null);
   const [steps, setSteps] = useState<Step[]>([]);
+  /** Products the minimum stock put on «Nachkaufen» (ADR-0059). Kept when «Zurück» undoes a step: they stay on the list. */
+  const [onList, setOnList] = useState<Id[]>([]);
   const spots = useSpots();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -121,6 +124,9 @@ export function CheckPage() {
         outcome: choice === 'wasted' ? 'wasted' : 'eaten',
         ...(choice === 'half' && half !== null ? { quantity: half } : {}),
       });
+      if (result.addedToList === true) {
+        setOnList((previous) => (previous.includes(item.id) ? previous : [...previous, item.id]));
+      }
       setSteps((previous) => [...previous, { answer: choice, eventId: result.eventId }]);
     });
 
@@ -143,6 +149,7 @@ export function CheckPage() {
   if (queue === null) {
     return <p className="sr-only">{messages.loading}</p>;
   }
+  const onListText = onListHint(onList.length);
   const current = queue[steps.length];
   const cue = spotCue(queue, steps.length);
   const cuePhoto =
@@ -165,6 +172,7 @@ export function CheckPage() {
             {t.doneTitle}
           </h2>
           <p>{t.summary(tally(steps.map((step) => step.answer)))}</p>
+          {onListText === undefined ? null : <p>{onListText}</p>}
           <Link
             to="/"
             className="inline-flex min-h-12 items-center justify-center rounded-xl bg-basil-700 px-5 font-semibold text-white transition-colors hover:bg-basil-800 active:bg-basil-900"

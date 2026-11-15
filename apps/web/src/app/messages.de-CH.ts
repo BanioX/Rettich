@@ -467,6 +467,8 @@ export const messages = {
     failed: 'Das hat nicht geklappt. Versuch es noch einmal.',
     /** Said after an outcome that put the product on the list. */
     onList: 'Steht jetzt auf «Nachkaufen».',
+    /** The same after several outcomes at once (the pots, «Verarbeiten», the check). */
+    onListMany: (count: number) => `${count} Artikel stehen jetzt auf «Nachkaufen».`,
     /** Small note on a shopping row the minimum created. */
     note: 'Mindestbestand',
   },

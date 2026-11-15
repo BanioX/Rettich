@@ -58,8 +58,11 @@ export function createProcessCommands(ctx: AppContext) {
       }
 
       // The ingredients are gone: staples among them go back on «Nachkaufen» (ADR-0059).
+      let addedToListCount = 0;
       for (const productId of new Set(items.map((item) => item.productId))) {
-        await ensureMinStock(input.householdId, productId);
+        if (await ensureMinStock(input.householdId, productId)) {
+          addedToListCount += 1;
+        }
       }
 
       let expiresOn: LocalDate | undefined;
@@ -145,6 +148,7 @@ export function createProcessCommands(ctx: AppContext) {
         outcomeIds,
         valueRappen: rappen(total),
         valueEstimated: estimated,
+        ...(addedToListCount === 0 ? {} : { addedToListCount }),
         ...(expiresOn === undefined ? {} : { expiresOn }),
       };
     });
