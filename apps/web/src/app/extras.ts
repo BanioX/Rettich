@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
 
 /**
- * Rettich starts with the essentials; everything else is an extra a person switches on under
- * «Mehr › Funktionen», as a whole («Erweitert») or group by group (ADR-0095). Hiding an extra hides
+ * Rettich starts with «Basis», the essentials; everything else is an extra a person switches on
+ * under «Mehr › Funktionen», as a whole («Erweitert») or group by group (ADR-0095). Hiding an extra hides
  * its entry points only: its data stays, in the database and in the backup.
  */
 export const EXTRA_GROUPS = [
@@ -19,7 +19,7 @@ export const EXTRA_GROUPS = [
 export type ExtraGroup = (typeof EXTRA_GROUPS)[number];
 
 export interface ExtrasState {
-  /** «Erweitert»: off shows the essentials only, whatever the groups say. */
+  /** «Erweitert»: off shows «Basis» only, whatever the groups say. */
   on: boolean;
   groups: Record<ExtraGroup, boolean>;
 }
@@ -33,7 +33,7 @@ const allGroups = (value: boolean) =>
 /** Everything shown: how Rettich looked before ADR-0095, and how it stays for people with data. */
 export const ALL_EXTRAS: ExtrasState = { on: true, groups: allGroups(true) };
 
-/** A new person: the essentials. Switching «Erweitert» on then shows every group. */
+/** A new person: «Basis». Switching «Erweitert» on then shows every group. */
 export const ESSENTIALS: ExtrasState = { on: false, groups: allGroups(true) };
 
 function storage(): Storage | undefined {
@@ -112,6 +112,20 @@ export function startWithEssentials(): void {
 
 export function isShown(state: ExtrasState, group: ExtraGroup): boolean {
   return state.on && state.groups[group];
+}
+
+/**
+ * The name of what this device shows: «Basis» (nothing extra), «Erweitert» (every group) or an
+ * own choice in between.
+ */
+export type ExtrasLevel = 'basis' | 'extended' | 'custom';
+
+export function extrasLevel(state: ExtrasState): ExtrasLevel {
+  const shown = EXTRA_GROUPS.filter((group) => isShown(state, group)).length;
+  if (shown === 0) {
+    return 'basis';
+  }
+  return shown === EXTRA_GROUPS.length ? 'extended' : 'custom';
 }
 
 function subscribe(listener: () => void): () => void {

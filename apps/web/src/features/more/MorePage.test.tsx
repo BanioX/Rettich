@@ -1,5 +1,5 @@
 import 'fake-indexeddb/auto';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { act, cleanup, render, screen, within } from '@testing-library/react';
 import { addDays } from '@fridgeai/core';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -67,7 +67,17 @@ describe('«Mehr»: Kühlschrank-Check', () => {
     ).toEqual(['/shopping']);
     const balance = screen.getByRole('region', { name: messages.more.groups.balance });
     expect(within(balance).getAllByRole('link')).toHaveLength(1);
-    expect(screen.getByRole('link', { name: /^Funktionen.*Grundfunktionen/ })).toBeDefined();
+    expect(screen.getByRole('link', { name: /^Funktionen.*Basis/ })).toBeDefined();
+  });
+
+  it('names the set: Basis, Erweitert or an own choice', async () => {
+    writeExtras({ on: true, groups: { ...ESSENTIALS.groups, nutrition: false } });
+    renderMore();
+    expect(await screen.findByRole('link', { name: /^Funktionen.*Eigene Auswahl/ })).toBeDefined();
+    act(() => {
+      writeExtras({ ...ESSENTIALS, on: true });
+    });
+    expect(screen.getByRole('link', { name: /^Funktionen.*Erweitert/ })).toBeDefined();
   });
 
   it('words today and yesterday', () => {

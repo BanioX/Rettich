@@ -1155,15 +1155,18 @@ export const messages = {
     vacationLabel: 'Ferien-Check',
     vacationDetail: 'Was bis zu deiner Rückkehr abläuft',
     /** «Funktionen» (ADR-0095): which set this device shows. */
-    extrasDetail: (on: boolean) => (on ? 'Erweitert' : 'Grundfunktionen'),
+    extrasDetail: { basis: 'Basis', extended: 'Erweitert', custom: 'Eigene Auswahl' },
   },
-  /** «Funktionen» (ADR-0095): the essentials first, every extra group switchable. */
+  /** «Funktionen» (ADR-0095): «Basis» first, every extra group switchable. */
   extras: {
     intro:
-      'Rettich zeigt zuerst das Wichtigste: erfassen, sehen, was bald abläuft, und eintragen, was du verwertet oder entsorgt hast. Mit «Erweitert» kommt mehr dazu.',
+      'Die Basis zeigt das Wichtigste: erfassen, sehen, was bald abläuft, und eintragen, was du verwertet oder entsorgt hast. Mit «Erweitert» kommt mehr dazu, jede Gruppe einzeln.',
+    basisTitle: 'Immer dabei',
+    basis:
+      'Erfassen, Heute retten, Vorrat, Bilanz, Nachkaufen, Journal, Haltbarkeit A–Z und Deine Daten.',
     switchLabel: 'Erweitert',
     switchHint:
-      'Zeigt die Gruppen unten. Ausblenden löscht nichts: Deine Daten bleiben und sind in der Sicherung.',
+      'Schaltet acht Gruppen dazu, jede einzeln wählbar. Ausblenden löscht nichts: Deine Daten bleiben und sind in der Sicherung.',
     groupsTitle: 'Was dazukommt',
     groups: {
       household: { title: 'Haushalt', detail: 'Personen und «Gehört»: wem etwas gehört' },
