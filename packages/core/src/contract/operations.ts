@@ -776,6 +776,8 @@ export const CONTRACT_V1 = {
       /** Value that moved on: the sum of the ingredients. */
       valueRappen: RappenSchema.min(0),
       valueEstimated: z.boolean(),
+      /** How many ingredients the minimum stock put on «Nachkaufen» (ADR-0059); absent when none. */
+      addedToListCount: z.int().min(1).optional(),
       /** Expiry of the new item; absent when nothing was left. */
       expiresOn: LocalDateSchema.optional(),
     }),

@@ -146,6 +146,7 @@ export function ProcessPage() {
         outcomeIds: done.outcomeIds,
         ...(done.resultItemId === undefined ? {} : { resultItemId: done.resultItemId }),
         location: 'fridge',
+        ...(done.addedToListCount === undefined ? {} : { addedToListCount: done.addedToListCount }),
       };
       void navigate('/inventory?location=fridge', { state: { closed } });
     } catch {

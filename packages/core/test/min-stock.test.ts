@@ -193,6 +193,27 @@ describe('minimum stock after an outcome', () => {
     const items = await listed();
     expect(items.map((entry) => entry.name)).toEqual(['Vollmilch']);
   });
+
+  it('reports how many ingredients went on the list, and nothing otherwise', async () => {
+    const milk = await add();
+    const flour = await add('Mehl');
+    await setMin((await productOf('Vollmilch')).id, 1);
+    await setMin((await productOf('Mehl')).id, 1);
+    const both = await inventory['inventory.process']({
+      commandId: next(),
+      householdId,
+      ingredients: [{ itemId: milk.itemId }, { itemId: flour.itemId }],
+    });
+    expect(both.addedToListCount).toBe(2);
+
+    const egg = await add('Eier');
+    const none = await inventory['inventory.process']({
+      commandId: next(),
+      householdId,
+      ingredients: [{ itemId: egg.itemId }],
+    });
+    expect(none.addedToListCount).toBeUndefined();
+  });
 });
 
 describe('export and import of the minimum stock (ADR-0020)', () => {

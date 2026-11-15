@@ -5,6 +5,7 @@ import { useAppData } from '../../app/AppData';
 import { messages } from '../../app/messages.de-CH';
 import { Button } from '../../ui/Button';
 import { ChoiceChips } from '../../ui/ChoiceChips';
+import { onListHint } from './min-stock-hint';
 import { outcomeText, planOutcome, rebuyText } from './settle';
 import { createPortal } from 'react-dom';
 
@@ -93,6 +94,7 @@ export function useSettleSelected(): {
       const done: InventoryItemView[] = [];
       const eventIds: Id[] = [];
       const failed: InventoryItemView[] = [];
+      let onList = 0;
       setBusy(true);
       for (const item of items) {
         try {
@@ -105,6 +107,9 @@ export function useSettleSelected(): {
           });
           done.push(item);
           eventIds.push(result.eventId);
+          if (result.addedToList === true) {
+            onList += 1;
+          }
         } catch {
           failed.push(item);
         }
@@ -120,9 +125,11 @@ export function useSettleSelected(): {
           ? ''
           : messages.inventory.settle.failedSome(failed.map((item) => item.name)),
       ].filter((part) => part !== '');
-      const hint = planOutcome(done, outcome, today).askStillGood
-        ? messages.rescue.stillGood
-        : undefined;
+      const lines = [
+        planOutcome(done, outcome, today).askStillGood ? messages.rescue.stillGood : undefined,
+        onListHint(onList),
+      ].filter((line) => line !== undefined);
+      const hint = lines.length === 0 ? undefined : lines.join(' ');
       setToast({
         text: parts.join(' '),
         ...(hint === undefined ? {} : { hint }),

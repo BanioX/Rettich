@@ -35,6 +35,8 @@ export type ClosedItem =
       outcomeIds: Id[];
       resultItemId?: Id;
       location: StorageLocation;
+      /** How many ingredients the minimum stock put on «Nachkaufen» (ADR-0059). */
+      addedToListCount?: number;
     };
 
 /** Router state survives reloads in the browser history: read it defensively. */
@@ -65,6 +67,11 @@ export function closedItemFrom(state: unknown): ClosedItem | null {
           outcomeIds: outcomeIds.slice(0, 50),
           ...(resultItemId.success ? { resultItemId: resultItemId.data } : {}),
           location: location.data,
+          ...(typeof fields.addedToListCount === 'number' &&
+          Number.isSafeInteger(fields.addedToListCount) &&
+          fields.addedToListCount > 0
+            ? { addedToListCount: fields.addedToListCount }
+            : {}),
         }
       : null;
   }
