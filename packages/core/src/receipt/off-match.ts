@@ -119,17 +119,26 @@ function otherPack(name: string, hit: ProductSearchHit): boolean {
   );
 }
 
+/** Words that say what the product is: house brands («Classic», «Prix», «Bio» …) say nothing. */
+function productTokens(text: string): string[] {
+  return tokens(text).filter((token) => !HOUSE_BRANDS.has(token));
+}
+
 function score(name: string, hit: ProductSearchHit): number {
-  const wanted = new Set(tokens(name));
-  const offered = new Set(tokens(`${hit.name} ${hit.brand ?? ''}`));
+  const wanted = new Set(productTokens(name));
+  const offered = new Set(productTokens(`${hit.name} ${hit.brand ?? ''}`));
   if (wanted.size === 0 || offered.size === 0) {
     return 0;
   }
   const shared = [...wanted].filter((token) => offered.has(token)).length;
+  // One shared word is not enough when the line names more: «Joghurt Erdbeer» is no «Joghurt
+  // Mocca», and «Kaffee Creme» no «Creme Brûlée» (Alban, 14.11.2026).
+  if (shared < Math.min(2, wanted.size)) {
+    return 0;
+  }
   // Dice: the shared words, measured against both sides.
   let result = (2 * shared) / (wanted.size + offered.size);
-  const productWords = [...wanted].filter((token) => !HOUSE_BRANDS.has(token));
-  if (productWords.length > 0 && productWords.every((token) => offered.has(token))) {
+  if (shared === wanted.size) {
     result += 0.2;
   }
   const printed = parsePackSize(name);

@@ -43,3 +43,12 @@ Alban hat den Abgleich am Handy getestet («Bon auslesen ist 10/10») und entsch
 - **Klarer Fortschritt:** «Prüfe 8 von 10 … · 2 gefunden». Das Warten kommt von der Grenze bei Open Food Facts.
 - **Barcode pro Zeile:** Ohne Treffer oder nach «Nein» bietet die Zeile «Barcode scannen» an. Ein gescannter Barcode gilt als bestätigt, denn die Person hält genau diese Packung in der Hand. Ein Hinweis nach dem Abgleich lädt ein, die übrigen Produkte zu scannen.
 
+
+## Nachtrag (15.11.2026): Hausmarken zählen nicht, ein Wort reicht nicht
+
+Alban, 14.11.2026: «Mit dem Wort Classic erkennt es manchmal Dinge, die völlig andere Artikel sind.» Der Ähnlichkeitswert zählte Hausmarken-Wörter (Classic, Prix Garantie, Naturaplan, Bio …) als gemeinsame Wörter mit, und schon ein einziges gemeinsames Wort konnte reichen. So wurde «Naturaplan Joghurt Erdbeer 180g» als sicher «Joghurt Mocca», und «M-Classic Kaffee Creme» als «Creme Brulee» vorgeschlagen.
+
+- **Hausmarken-Wörter zählen nicht:** Verglichen werden nur Wörter, die sagen, was das Produkt ist (`productTokens` in `off-match.ts`).
+- **Nennt die Zeile mehr als ein Produktwort, müssen mindestens zwei übereinstimmen.** Eine Zeile mit einem Wort («Rucola») braucht eines.
+- Das gilt für Open Food Facts und für den mitgelieferten Katalog (ADR-0045): Beide rangieren mit `rankReceiptHits`. Lieber kein Vorschlag als ein falscher; ohne Treffer bleibt «Barcode scannen».
+- Ob der automatische Abgleich über Open Food Facts bleibt, entscheidet Alban (offen).
